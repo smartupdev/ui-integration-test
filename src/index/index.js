@@ -71,7 +71,7 @@ $(function() {
     web3.eth.sendTransaction({
       from: account,
       to: account.substring(2),
-      value: web3.toWei(0.01, 'ether'),
+      value: web3.toWei(0, 'ether'),
     }, (err, txHash) => {
       if(err) {
         console.log('transaction err =', err);
@@ -80,8 +80,44 @@ $(function() {
     })
   });
 
+  $('#postIpfsJson').on('click', () => {
+    var json = $('#jsonStr').val();
+    console.log('json = ', json);
+    if(json && json != '') {
+      ipfs.post(json, function (err, ret) {
+        console.log('post err', err);
+        console.log('post ret', ret);
+        // alert('hash = ' + ret[0].hash);
+      });
+    }
+  });
+
   $('#getIpfsFile').on('click', () => {
-    ipfs.get();
+    var hash = $('#ipfsFileHash').val();
+    if(!hash || hash === '') {
+      return;
+    }
+    ipfs.get(hash, (err, ret) => {
+      if(err) {
+        console.log('get err ', err);
+      }
+      console.log('get success ', ret);
+      if(ret) {
+        if(ret[0] && ret[0].content) {
+          // 文件
+          var str = ret[0].content.toString('utf-8');
+          console.log('string = ', str);
+        } else {
+          // 目录
+          console.log('get success ', ret);
+        }
+      }
+    });
+  });
+
+  $('#postIpfsImg').on('click', () => {
+    var img = $('#img').val();
+    console.log(img);
   })
 
   $('#initDb').on('click', () => {
