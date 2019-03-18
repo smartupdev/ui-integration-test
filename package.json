@@ -12,6 +12,7 @@
   "author": "f4zz",
   "license": "ISC",
   "dependencies": {
+    "blob-to-buffer": "^1.2.8",
     "blobinfo": "^0.1.2",
     "buffer": "^5.2.1",
     "ipfs": "^0.34.4",

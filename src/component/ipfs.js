@@ -1,5 +1,6 @@
 import ipfsClient from 'ipfs-http-client'
 import blobinfo from 'blobinfo'
+import toBuffer from 'blob-to-buffer'
 var Buffer = require('buffer/').Buffer
 
 const ipfs = {};
@@ -12,12 +13,19 @@ ipfs.get = (hash, callback) => {
   client.get(hash, callback);
 }
 
-ipfs.post = (string, callback) => {
-  var data = new Buffer(string, 'utf8');
+ipfs.postString = (string, callback) => {
+  const data = new Buffer(string, 'utf8');
   client.add(data, null, callback);
 }
 
-ipfs.postImg = () => {
+ipfs.postFile = (file, callback) => {
+  const blob = new Blob([file],{type: file.type});
+  console.log('blob', blob);
+  // const data = new Buffer(blob);
+  // const data = Buffer.from(blob);
+  toBuffer(blob, (err, buffer) => {
+    client.add(buffer, null, callback);
+  })
   
 }
 

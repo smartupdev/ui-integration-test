@@ -84,7 +84,7 @@ $(function() {
     var json = $('#jsonStr').val();
     console.log('json = ', json);
     if(json && json != '') {
-      ipfs.post(json, function (err, ret) {
+      ipfs.postString(json, function (err, ret) {
         console.log('post err', err);
         console.log('post ret', ret);
         // alert('hash = ' + ret[0].hash);
@@ -116,8 +116,23 @@ $(function() {
   });
 
   $('#postIpfsImg').on('click', () => {
-    var img = $('#img').val();
-    console.log(img);
+    var img = document.getElementById("img");
+    if (!img || !img.files || !img.files[0]) {
+      alert('请先选择图片');
+      return;
+    }
+    var file = img.files[0];
+    console.log(file);
+    // const blob = new Blob([file],{type: file.type});
+
+    ipfs.postFile(file, function (err, ret) {
+      console.log('post err', err);
+      console.log('post ret', ret);
+      if(ret && ret[0] && ret[0].hash)
+      console.log('File path = ', 'https://ipfs.smartup.global/ipfs/' + ret[0].hash);
+      // alert('hash = ' + ret[0].hash);
+    });
+
   })
 
   $('#initDb').on('click', () => {
