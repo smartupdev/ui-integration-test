@@ -14,6 +14,7 @@
   "dependencies": {
     "blobinfo": "^0.1.2",
     "ipfs": "^0.34.4",
+    "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^30.0.0",
     "jquery": "^3.3.1",
     "orbit-db": "^0.19.9"

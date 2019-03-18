@@ -84,8 +84,8 @@ $(function() {
     ipfs.get();
   })
 
-  $('#test').on('click', () => {
-    orbitdb.test();
+  $('#initDb').on('click', () => {
+    orbitdb.initDb();
   })
 
 });
