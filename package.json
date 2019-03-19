@@ -15,6 +15,7 @@
     "blob-to-buffer": "^1.2.8",
     "blobinfo": "^0.1.2",
     "buffer": "^5.2.1",
+    "gun": "^0.9.9999991",
     "ipfs": "^0.34.4",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^30.0.0",

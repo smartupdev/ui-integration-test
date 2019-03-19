@@ -8,6 +8,7 @@ module.exports = {
     index: './src/index/index.js',
     ipfs: './src/component/ipfs.js',
     orbitdb: './src/component/orbitdb.js',
+    gun: './src/component/gun.js',
   },
   
   output: {
@@ -19,7 +20,7 @@ module.exports = {
         filename:'./index.html',
         template:'./src/index/index.html',
         hash:true,
-        chunks:['index', 'ipfs', 'orbitdb'],
+        chunks:['index'],
     })
   ],
 

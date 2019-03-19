@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import {ipfs} from '../component/ipfs'
 import {orbitdb} from '../component/orbitdb'
+// import {gun} from '../component/gun'
 
 var account;
 
@@ -137,6 +138,16 @@ $(function() {
 
   $('#initDb').on('click', () => {
     orbitdb.initDb();
+  })
+
+
+  $('#put').on('click', () => {
+    gun.put();
+    
+  })
+
+  $('#get').on('click', () => {
+    gun.get();
   })
 
 });
