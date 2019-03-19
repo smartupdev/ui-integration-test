@@ -2,6 +2,7 @@ import $ from 'jquery'
 import {ipfs} from '../component/ipfs'
 import {orbitdb} from '../component/orbitdb'
 // import {gun} from '../component/gun'
+import {bigchain} from '../component/bigchain'
 
 var account;
 
@@ -148,6 +149,18 @@ $(function() {
 
   $('#get').on('click', () => {
     gun.get();
+  })
+
+  $('#bigchainPut').on('click', () => {
+    bigchain.put()
+  })
+
+  $('#bigchainGet').on('click', () => {
+    bigchain.get()
+  })
+
+  $('#bigchainSearch').on('click', () => {
+    bigchain.search()
   })
 
 });
