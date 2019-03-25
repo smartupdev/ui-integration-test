@@ -16,17 +16,14 @@
     "blob-to-buffer": "^1.2.8",
     "blobinfo": "^0.1.2",
     "buffer": "^5.2.1",
-    "gun": "^0.9.9999991",
-    "ipfs": "^0.34.4",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^30.0.0",
-    "jquery": "^3.3.1",
-    "orbit-db": "^0.19.9"
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
   }
 }

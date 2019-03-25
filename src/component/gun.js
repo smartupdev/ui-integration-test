@@ -1,22 +1,29 @@
-var Gun = require('gun/gun');
+// var Gun = require('gun/gun');
 
-var gun = {};
+// var gun = {};
 
-var g = Gun();
+// var g = Gun('https://gunjs.herokuapp.com/gun');
+// var dbpath = 'smartup/test';
 
+// gun.put = function() {
+  
+//   g.get(dbpath).put({
+//     '0x001': {
+//       name: 'zhen',
+//       email: '123@qq.com'
+//     }
+//   });
 
-gun.put = function() {
-  g.put('mark').put({
-    name: 'aaaaaa',
-    email: 'eeeeeeeeeee',
-  });
-}
+//   g.get(dbpath).put({
+//     zhang: ''
+//   });
 
-gun.get = function() {
-  g.get('mark').get('name').once(function (data, key) {
-    console.log('data = ', data);
-    console.log('key = ', key);
-  });
-}
+// }
 
-export{gun}
+// gun.get = function() {
+//   g.get(dbpath).get('zhang').once(function (data) {
+//     console.log('data = ', data)
+//   })
+// }
+
+// export{gun}

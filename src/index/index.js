@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import {ipfs} from '../component/ipfs'
-import {orbitdb} from '../component/orbitdb'
+// import {orbitdb} from '../component/orbitdb'
 // import {gun} from '../component/gun'
 import {bigchain} from '../component/bigchain'
 
@@ -137,20 +137,6 @@ $(function() {
 
   })
 
-  $('#initDb').on('click', () => {
-    orbitdb.initDb();
-  })
-
-
-  $('#put').on('click', () => {
-    gun.put();
-    
-  })
-
-  $('#get').on('click', () => {
-    gun.get();
-  })
-
   $('#bigchainPut').on('click', () => {
     bigchain.put()
   })
@@ -161,6 +147,14 @@ $(function() {
 
   $('#bigchainSearch').on('click', () => {
     bigchain.search()
+  })
+
+  $('#bigchainTransfer').on('click', () => {
+    bigchain.transfer()
+  })
+
+  $('#bigchainSearchOwner').on('click', () => {
+    bigchain.searchOwner()
   })
 
 });
