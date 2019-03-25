@@ -18,7 +18,8 @@
     "buffer": "^5.2.1",
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^30.0.0",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "web3": "^1.0.0-beta.50"
   },
   "devDependencies": {
     "html-webpack-plugin": "^3.2.0",

@@ -3,6 +3,7 @@ import {ipfs} from '../component/ipfs'
 // import {orbitdb} from '../component/orbitdb'
 // import {gun} from '../component/gun'
 import {bigchain} from '../component/bigchain'
+import {ethUtil} from '../component/ethUtil'
 
 var account;
 
@@ -81,6 +82,10 @@ $(function() {
       $('#txHash').html(txHash)
     })
   });
+
+  $('#ethTest').on('click', function () {
+    ethUtil.queryTest()
+  })
 
   $('#postIpfsJson').on('click', () => {
     var json = $('#jsonStr').val();
