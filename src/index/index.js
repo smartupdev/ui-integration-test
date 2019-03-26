@@ -22,8 +22,8 @@ $(function() {
 
     // MateMask登录授权
     ethereum.enable().then((accounts) => {
-      console.log(accounts);
       account = accounts[0];
+      window.account = accounts[0];
       $('#publicKey').html(account);
     }).catch((e)=> {
       console.log('MateMask login error = ',e);
@@ -83,9 +83,31 @@ $(function() {
     })
   });
 
-  $('#ethTest').on('click', function () {
-    ethUtil.queryTest()
+  // =======================================================================
+
+  $('#balanceOf').on('click', function () {
+    ethUtil.balanceOf()
   })
+
+  $('#createMarket').on('click', function () {
+    ethUtil.createMarket()
+  })
+
+  $('#getMarketByIndex').on('click', function () {
+    var index = $('#marketIndexInput').val()
+    ethUtil.getMarketByIndex(index)
+  })
+
+  $('#setMarketAddress').on('click', function () {
+    var addr = $('#marketAddressInput').val();
+    ethUtil.setMarketAddress(addr)
+  })
+
+  $('#getTotalTradeSut').on('click', function () {
+    ethUtil.getTotalTradeSut()
+  })
+
+  // =======================================================================
 
   $('#postIpfsJson').on('click', () => {
     var json = $('#jsonStr').val();
@@ -141,6 +163,8 @@ $(function() {
     });
 
   })
+
+  // =====================================================================
 
   $('#bigchainPut').on('click', () => {
     bigchain.put()

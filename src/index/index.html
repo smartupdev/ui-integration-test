@@ -24,13 +24,35 @@
   <button id="transaction">转账</button>
   <p>交易哈希：<span id="txHash"></span></p>
 
-  <br>
+
+
+
+
+  <br><br><br>
 
   <h3>合约测试</h3>
 
-  <p><button id="ethTest">erc20测试</button></p>
+  <h5>需要先连接metamask，返回见consolo</h5>
 
-  <p><button>创建市场</button></p>
+  <p><button id="balanceOf">查询SUT</button></p>
+
+  <p><button id="createMarket">创建市场</button></p>
+
+  <p><input id="marketIndexInput" type="text"/></p>
+
+  <p><button id="getMarketByIndex">索引查询市场</button></p>
+
+  <h5>以下操作需要设置市场地址</h5>
+
+  <p><input id="marketAddressInput" type="text"/></p>
+
+  <p><button id="setMarketAddress">设置市场地址</button></p>
+
+  <p><button id="getTotalTradeSut">查询市场总交易SUT</button></p>
+
+
+
+
 
   <br><br><br>
 
@@ -48,6 +70,10 @@
 
   <p><input id="img" type="file"/></p>
   <p><button id="postIpfsImg">写入图片，见console</button></p>
+
+
+
+
 
 
   <br/><br/><br/>
