@@ -3,27 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>poc-ui-test</title>
+  <style>
+    p{
+      margin-left: 20px;
+    }
+  </style>
 </head>
 <body>
   
   <h3>MateMask测试</h3>
 
-  <br>
-
-  <button id="connectMateMaskBtn">连接MateMask</button>
+  <p><button id="connectMateMaskBtn">连接MateMask</button></p>
   <p>连接网络：<span id="netId"></span></p>
   <p>公钥地址：<span id="publicKey"></span></p>
 
-  <br>
-
-  <button id="getBalance">查询余额</button>
+  <p><button id="getBalance">查询余额</button></p>
   <p>以太坊余额：<span id="ethBalance"></span></p>
 
-  <br>
-
-  <button id="transaction">转账</button>
+  <p><button id="transaction">转账</button></p>
   <p>交易哈希：<span id="txHash"></span></p>
-
 
 
 
@@ -32,23 +30,56 @@
 
   <h3>合约测试</h3>
 
-  <h5>需要先连接metamask，返回见consolo</h5>
+  <h5>需要先连接metamask</h5>
 
   <p><button id="balanceOf">查询SUT</button></p>
 
   <p><button id="createMarket">创建市场</button></p>
 
-  <p><input id="marketIndexInput" type="text"/></p>
+  <p><input id="marketIndexInput" type="text"/> <button id="getMarketByIndex">索引查询市场</button></p>
 
-  <p><button id="getMarketByIndex">索引查询市场</button></p>
 
-  <h5>以下操作需要设置市场地址</h5>
 
-  <p><input id="marketAddressInput" type="text"/></p>
+  <h5>市场</h5>
 
-  <p><button id="setMarketAddress">设置市场地址</button></p>
+  <p>
+    <input id="marketAddressInput" type="text" value="0x2af8209a2131C8C1E00e461fAa206820F8b5d9BA"/>
+    <button id="setMarketAddress">设置市场地址</button>
+  </p>
+
+  <p><button id="isTradeEnabled">是否可以交易</button></p>
+
+  <p><button id="getCreator">查询市场创建者地址</button></p>
 
   <p><button id="getTotalTradeSut">查询市场总交易SUT</button></p>
+
+  <p><button id="getCtBalance">CT余额查询</button></p>
+
+
+
+  <h5>交易</h5>
+
+  <p>
+    <input id="bidQuoteInput" type="number" placeholder="CT数量"/>
+    <button id="getBidQuote">查询买入价格[SUT]</button>
+  </p>
+
+  <p>
+    <input id="askQuoteInput" type="number" placeholder="CT数量"/>
+    <button id="getAskQuote">查询卖出价格[SUT]</button>
+  </p>
+
+  <p>
+    <input id="bidPriceInput" type="number" placeholder="CT查询价格"/>
+    <input id="bidAmountInput" type="number" placeholder="CT数量"/>
+    <button id="bidCt">买入CT</button>
+  </p>
+
+  <p>
+    <input id="askInput" type="number" placeholder="CT数量"/>
+    <button id="askCt">卖出CT</button>
+  </p>
+
 
 
 

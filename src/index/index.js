@@ -83,7 +83,7 @@ $(function() {
     })
   });
 
-  // =======================================================================
+  // ================================== eth  =====================================
 
   $('#balanceOf').on('click', function () {
     ethUtil.balanceOf()
@@ -98,16 +98,45 @@ $(function() {
     ethUtil.getMarketByIndex(index)
   })
 
+  // 设置市场
   $('#setMarketAddress').on('click', function () {
     var addr = $('#marketAddressInput').val();
     ethUtil.setMarketAddress(addr)
+  })
+
+  $('#getCtBalance').on('click', function () {
+    ethUtil.getCtBalance()
+  })
+
+  $('#isTradeEnabled').on('click', function () {
+    ethUtil.isTradeEnabled()
+  })
+
+  $('#getCreator').on('click', function () {
+    ethUtil.getCreator()
   })
 
   $('#getTotalTradeSut').on('click', function () {
     ethUtil.getTotalTradeSut()
   })
 
-  // =======================================================================
+  $('#getBidQuote').on('click', function () {
+    var ctAmount = $('#bidQuoteInput').val()
+    ethUtil.getBidQuote(ctAmount)
+  })
+
+  $('#getAskQuote').on('click', function () {
+    var ctAmount = $('#askQuoteInput').val()
+    ethUtil.getAskQuote(ctAmount)
+  })
+
+  $('#bidCt').on('click', function () {
+    var bidPrice = $('#bidPriceInput').val()
+    var bidAmount = $('#bidAmountInput').val()
+    ethUtil.bidCt(bidPrice, bidAmount)
+  })
+  
+  // ================================= ipfs ======================================
 
   $('#postIpfsJson').on('click', () => {
     var json = $('#jsonStr').val();
