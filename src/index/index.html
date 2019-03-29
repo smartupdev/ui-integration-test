@@ -36,14 +36,14 @@
 
   <p><button id="createMarket">创建市场</button></p>
 
-  <p><input id="marketIndexInput" type="text"/> <button id="getMarketByIndex">索引查询市场</button></p>
+  <p><input id="marketIndexInput" type="text" placeholder="市场索引"/> <button id="getMarketByIndex">索引查询市场</button></p>
 
 
 
   <h5>市场</h5>
 
   <p>
-    <input id="marketAddressInput" type="text" value="0x2af8209a2131C8C1E00e461fAa206820F8b5d9BA"/>
+    <input id="marketAddressInput" type="text" value=""/>
     <button id="setMarketAddress">设置市场地址</button>
   </p>
 
@@ -82,7 +82,86 @@
 
 
 
+  <h5>争议</h5>
 
+  <p><button id="marketState">市场状态</button></p>
+
+  <p><button id="nextFlaggableDate">允许下次争议开始时间</button></p>
+
+  <p>
+    <input id="disputeAmount" type="number" placeholder="SUT数量"/>
+    <button id="createDispute">发起争议</button>
+  </p>
+
+  <p><button id="flaggingPeriod">本次争议的开始结束时间</button></p>
+
+  <p><button id="getDisputeCount">查询争议人数</button></p>
+
+  <p><button id="getDisputeAmount">查询争议池金额</button></p>
+
+  <p><button id="getDisputeAddresses">参与争议的地址</button></p>
+
+  <p><button id="disputeDone">* 争议流产</button></p>
+
+  <p><b>陪审员投票</b></p>
+
+  <p><button id="flagVotingPeriod">投票的开始和结束时间</button></p>
+
+  <p>
+    <select id="disputeVote">
+      <option value="true">解散</option>
+      <option value="false">不解散</option>
+    </select>
+    <button id="jurorVote">陪审员投票(需要切换陪审员用户)</button>
+  </p>
+
+  <p><button id="getJurorSize">陪审员人数</button></p>
+
+  <p><button id="getJurorList">陪审员列表</button></p>
+
+  <p><button id="getJurorVotes">陪审员投票</button></p>
+
+  <p><button id="jurorVoteDone">* 投票完结</button></p>
+
+  <p><b>上诉</b></p>
+
+  <p><button id="appealRound">已投票次数 (最多3次)</button></p>
+
+  <p><button id="appealingPeriod">允许上诉的时间周期</button></p>
+
+  <p><button id="doAppeal">* 上诉 (需要2500SUT)</button></p>
+
+  <p><button id="marketDissolve">* 解散市场</button></p>
+
+
+  <h5>提案</h5>
+
+  <p>
+    <input id="proposedAmount" type="number" placeholder="提案金额SUT"/>
+    <button id="doProposed">发起提案</button>
+  </p>
+
+  <p><button id="getCurrentProposedAmount">当前提案金额</button></p>
+
+  <p><button id="getProposedAmount">总提案金额</button></p>
+
+  <p>提案投票</p>
+
+  <p><button id="proposedVotingPeriod">投票时间</button></p>
+
+  <p>
+    <select id="proposedVote">
+      <option value="true">同意</option>
+      <option value="false">反对</option>
+    </select>
+    <button id="doProposedVote">投票(需要切换陪审员用户)</button>
+  </p>
+
+  <p><button id="getProposedJurors">陪审员地址</button></p>
+
+  <p><button id="getProposedVote">陪审员投票</button></p>
+
+  <p><button id="proposedVoteDone">* 完结投票</button></p>
 
 
   <br><br><br>
@@ -101,9 +180,6 @@
 
   <p><input id="img" type="file"/></p>
   <p><button id="postIpfsImg">写入图片，见console</button></p>
-
-
-
 
 
 

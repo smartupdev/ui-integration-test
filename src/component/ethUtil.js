@@ -7,23 +7,30 @@ var ethUtil = {}
 // 正式链 smartup 合约地址
 // var contractAddress = '0x78f5bbc74fb9137a75d85f3c9c3c599be49f0a56';
 
-// SUT = SmartUp Token ：0xff06baccd44400a356ba64a9aba4d76cb1c99847
-// Smartup ： 0xb03aba8d576c499277f7e0946d55f30a07be39be
+// SUT：0xff06baccd44400a356ba64a9aba4d76cb1c99847
+// Smartup：  0xb03aba8d576c499277f7e0946d55f30a07be39be
+// Smartup_v2: 0x4a578e911ac8a00e4eae3c357b78b4c66aefc30e
+// Smartup_v3: 0x8f06e2fdcedba35f5ec853b099ed32b87516e9d2
+// Smartup_v4: 0x670a06f7a4306232f027a10bb90892f27f6b1208
+// Smartup_v5: 0x764fc672d656c6c89899467eb242d65eea5f7f0a
+// Smartup_v6: 0xbdfd50a794478ffb7c31fd8b3631e171e4f90949
+// Smartup_v7: 0x5233fe9818f8296f8b89650162f55135876cb686
 // NTT：0xA01f5244B17b0D206903ac40A940FE981768090d
 
 var sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
-var smartupContractAddress = '0xb03aba8d576c499277f7e0946d55f30a07be39be';
+var smartupContractAddress = '0x5233fe9818f8296f8b89650162f55135876cb686';
 
 if (!window.web3) {
     alert('请先安装metamask');
 }
 
-
 const myWeb3 = new Web3(web3.currentProvider);
 // console.log('myWeb3 : ', myWeb3);
 
 
-// 市场地址 0x2af8209a2131c8c1e00e461faa206820f8b5d9ba
+// ----------------------------------- 市场 ----------------------------------------------------
+
+// CT市场地址
 var marketAddress = '';
 
 ethUtil.balanceOf = function() {
@@ -41,7 +48,7 @@ ethUtil.balanceOf = function() {
 
     // call
     myWeb3.eth.call({
-        to: '0xff06baccd44400a356ba64a9aba4d76cb1c99847',
+        to: sutContractAddress,
         data: data
     }, function (err, ret) {
         if (err) {
@@ -74,12 +81,12 @@ ethUtil.createMarket = function() {
                 name: '_extraData'
             }
         ]
-    }, ['0xb03aba8d576c499277f7e0946d55f30a07be39be', '2500000000000000000000', '0x0000000000000000000000000000000000000000000000000000000000000001']);
+    }, [smartupContractAddress, '2500000000000000000000', '0x0000000000000000000000000000000000000000000000000000000000000001']);
 
     // transaction
     myWeb3.eth.sendTransaction({
         from: window.account,
-        to: '0xff06baccd44400a356ba64a9aba4d76cb1c99847',
+        to: sutContractAddress,
         value: '0x0',
         data: data
     }, function (err, ret) {
@@ -110,7 +117,7 @@ ethUtil.getMarketByIndex = function(index) {
     
     // call
     myWeb3.eth.call({
-        to: '0xb03aba8d576c499277f7e0946d55f30a07be39be',
+        to: smartupContractAddress,
         data: data
     }, function (err, ret) {
         if(err) {
@@ -128,6 +135,8 @@ ethUtil.setMarketAddress = function (addr) {
     console.log('设置市场成功')
 }
 
+
+// ct余额
 ethUtil.getCtBalance = function () {
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
@@ -153,6 +162,7 @@ ethUtil.getCtBalance = function () {
     });
 }
 
+// 是否可以交易
 ethUtil.isTradeEnabled = function() {
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
@@ -174,6 +184,33 @@ ethUtil.isTradeEnabled = function() {
     });
 }
 
+// 市场状态
+ethUtil.marketState = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'state',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        data: data
+    }, function (err, ret) {
+        if(err) {
+            console.log(err, ret);
+        } else {
+            console.log('市场状态(0 Active, 1 Voting, 2 Dissolving, 3 Dissolved):  ', myWeb3.eth.abi.decodeParameter('uint8', ret));
+        }
+    });
+}
+
+// 市场创建者
 ethUtil.getCreator = function () {
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
@@ -195,6 +232,7 @@ ethUtil.getCreator = function () {
     });
 }
 
+// 当前市场中的SUT
 ethUtil.getTotalTradeSut = function() {
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
@@ -275,56 +313,817 @@ ethUtil.getAskQuote = function (ctAmount) {
     });
 }
 
-
-
+// 买入CT
 ethUtil.bidCt = function (ctPrice, ctAmount) {
-
-    var val = myWeb3.eth.abi.encodeParameter('bytes32', 5);
-    console.log(val)
-
-    // 买入CT approveAndCall
-    // 调用SUT合约地址
+    // 买入CT 调用SUT合约地址
+    // 函数 approveAndCall
     // 参数 CT地址， quote价格*1.1，CT数量 
 
-    // console.log('ctPrice:', ctPrice, '  ctAmount:', ctAmount)
+    var decodeCtPrice = myWeb3.utils.toWei(ctPrice);
+    // console.log('decodeCtPrice:', decodeCtPrice);
 
-    // var decodeCtPrice = myWeb3.utils.toWei(ctPrice);
-    // var decodeCtAmount = myWeb3.eth.abi.encodeParameter('uint256', ctAmount);
-    // console.log('decodeCtPrice:', decodeCtPrice, '  decodeCtAmount:', decodeCtAmount)
+    var ctAmountWei = myWeb3.utils.toWei(ctAmount);
+    var decodeCtAmount = myWeb3.eth.abi.encodeParameter('uint256', ctAmountWei);
+    // console.log('decodeCtAmount:', decodeCtAmount)
 
-    // // encode function
-    // var data = myWeb3.eth.abi.encodeFunctionCall({
-    //     name: 'approveAndCall',
-    //     type: 'function',
-    //     inputs: [
-    //         {
-    //             type: 'address',
-    //             name: '_spender'
-    //         },
-    //         {
-    //             type: 'uint256',
-    //             name: '_value'
-    //         },
-    //         {
-    //             type: 'bytes',
-    //             name: '_extraData'
-    //         }
-    //     ]
-    // }, [marketAddress, decodeCtPrice, '0x0000000000000000000000000000000000000000000000000000000000000004']);
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'approveAndCall',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: '_spender'
+            },
+            {
+                type: 'uint256',
+                name: '_value'
+            },
+            {
+                type: 'bytes',
+                name: '_extraData'
+            }
+        ]
+    }, [marketAddress, decodeCtPrice, decodeCtAmount]);
 
-    // // transaction
-    // myWeb3.eth.sendTransaction({
-    //     from: window.account,
-    //     to: smartupContractAddress,
-    //     value: '0x0',
-    //     data: data
-    // }, function (err, ret) {
-    //     if (err) {
-    //         console.log(err, ret);
-    //     } else {
-    //         console.log('购买成功，交易hash为：', ret);
-    //     }
-    // });
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: sutContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('购买成功，交易hash为：', ret);
+        }
+    });
+}
+
+
+// 卖入CT
+ethUtil.askCt = function(ctAmount) {
+    var ctAmountWei = myWeb3.utils.toWei(ctAmount);
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'sell',
+        type: 'function',
+        inputs: [
+            {
+                type: 'uint256',
+                name: 'ctAmount'
+            }
+        ]
+    }, [ctAmountWei]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('卖出成功，交易hash为：', ret);
+        }
+    });
+
+}
+
+
+// ----------------------------------- 争议 ----------------------------------------------------
+
+// 允许下次争议开始的时间
+ethUtil.nextFlaggableDate = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'nextFlaggableDate',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            var timestamp = myWeb3.eth.abi.decodeParameter('uint256', ret);
+            var time = new Date(timestamp * 1000);
+            console.log('允许下次争议开始的时间为', time);
+        }
+    });
+}
+
+// 发起争议
+ethUtil.createDispute = function (sutAmount) {
+    
+    var sutAmountWei = myWeb3.utils.toWei(sutAmount);
+    console.log('window.account', window.account)
+    console.log('sutContractAddress', sutContractAddress)
+    console.log('smartupContractAddress ', smartupContractAddress);
+    console.log('sutAmountWei ', sutAmountWei);
+    console.log('marketAddress ', marketAddress);
+    
+    var extraData = '0x0000000000000000000000' + marketAddress.substr(2, 40) + '02';
+    console.log('extraData ', extraData);
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'approveAndCall',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            },
+            {
+                type: 'uint256'
+            },
+            {
+                type: 'bytes'
+            }
+        ]
+    }, [smartupContractAddress,  sutAmountWei, extraData]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: sutContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('发起争议成功，交易hash为：', ret);
+        }
+    });
+
+}
+
+// 本次争议的开始时间和结束时间
+ethUtil.flaggingPeriod = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'flaggingPeriod',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            var timestamps = myWeb3.eth.abi.decodeParameters(['uint256', 'uint256'], ret);
+            var start = new Date(timestamps[0] * 1000);
+            var end = new Date(timestamps[1] * 1000);
+            console.log('本次争议的开始时间和结束时间为', start, end);
+        }
+    });
+}
+
+// 总争议人数
+ethUtil.getDisputeCount = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'flaggerSize',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('总争议人数为', myWeb3.eth.abi.decodeParameter('uint256', ret));
+        }
+    });
+}
+
+// 争议池金额
+ethUtil.getDisputeAmount= function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'totalFlaggerDeposit',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('参与争议的金额为', myWeb3.utils.fromWei(myWeb3.eth.abi.decodeParameter('uint256', ret)));
+        }
+    });
+}
+
+
+// 参与争议的地址
+ethUtil.getDisputeAddresses= function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'flaggerList',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('参与争议的地址为', myWeb3.eth.abi.decodeParameter('address[]', ret));
+        }
+    });
+}
+
+// 争议投票的开始时间和结束时间
+ethUtil.flagVotingPeriod = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'votingPeriod',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            var timestamps = myWeb3.eth.abi.decodeParameters(['uint256', 'uint256'], ret);
+            var start = new Date(timestamps[0] * 1000);
+            var end = new Date(timestamps[1] * 1000);
+            console.log('争议投票的开始时间和结束时间为', start, end);
+        }
+    });
+}
+
+// 争议陪审员投票
+ethUtil.jurorVote = function (vote) {
+    var decodeVote;
+    if (vote === 'true' || vote === true) {
+        decodeVote = true;
+    } else {
+        decodeVote = false;
+    }
+
+    console.log('decodeVote:', decodeVote, '  vote:', vote)
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'vote',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            },
+            {
+                type: 'bool'
+            }
+        ]
+    }, [marketAddress, decodeVote]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('陪审员投票成功，交易hash为：', ret);
+        }
+    });
+}
+
+// 陪审员投票完成
+ethUtil.jurorVoteDone = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'conclude',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('结束投票，交易hash为：', ret);
+        }
+    });
+}
+
+// 争议完结
+ethUtil.disputeDone = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'closeFlagging',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('结束争议，交易hash为：', ret);
+        }
+    });
+}
+
+// 争议陪审员人数
+ethUtil.getJurorSize = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'jurorSize',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('陪审员人数为', myWeb3.eth.abi.decodeParameter('uint256', ret));
+        }
+    });
+}
+
+// 争议陪审员列表
+ethUtil.getJurorList = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'jurorList',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('陪审员列表为', myWeb3.eth.abi.decodeParameter('address[]', ret));
+        }
+    });
+}
+
+// 争议陪审员的投票
+ethUtil.getJurorVotes = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'jurorVotes',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('陪审员投票列表为', myWeb3.eth.abi.decodeParameter('uint8[]', ret));
+        }
+    });
+}
+
+// 已上诉的次数
+ethUtil.appealRound = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'appealRound',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('已投票的次数为', myWeb3.eth.abi.decodeParameter('uint8', ret));
+        }
+    });
+}
+
+// 上诉的开始时间和结束时间
+ethUtil.appealingPeriod = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'appealingPeriod',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // call
+    myWeb3.eth.call({
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            var timestamps = myWeb3.eth.abi.decodeParameters(['uint256', 'uint256'], ret);
+            var start = new Date(timestamps[0] * 1000);
+            var end = new Date(timestamps[1] * 1000);
+            console.log('上诉的开始时间和结束时间为', start, end);
+        }
+    });
+}
+
+// 上诉
+ethUtil.doAppeal = function () {
+    var sutAmountWei = myWeb3.utils.toWei('2500');
+    var extraData = '0x0000000000000000000000' + marketAddress.substr(2, 40) + '03';
+
+    console.log('window.account', window.account)
+    console.log('sutContractAddress', sutContractAddress)
+    console.log('smartupContractAddress ', smartupContractAddress);
+    console.log('sutAmountWei ', sutAmountWei);
+    console.log('extraData ', extraData);
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'approveAndCall',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            },
+            {
+                type: 'uint256'
+            },
+            {
+                type: 'bytes'
+            }
+        ]
+    }, [smartupContractAddress,  sutAmountWei, extraData]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: sutContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('上诉成功，交易hash为：', ret);
+        }
+    });
+}
+
+// 解散市场
+ethUtil.marketDissolve = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'dissolve',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [marketAddress]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: smartupContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('解散市场成功，交易hash为：', ret);
+        }
+    });
+}
+
+// ----------------------------------- 提案 ----------------------------------------------------
+
+// 发起提案
+ethUtil.doProposed = function (amount) {
+    var amountWei = myWeb3.utils.toWei(amount);
+
+    // console.log('amount:', amount, '  amountWei:', amountWei)
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'proposePayout',
+        type: 'function',
+        inputs: [
+            {
+                type: 'uint256'
+            }
+        ]
+    }, [amountWei]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('发起提案成功，交易hash为：', ret);
+        }
+    });
+}
+
+// 当前提案的金额
+ethUtil.getCurrentProposedAmount = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'proposedPayoutAmount',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('当前提案的金额为', myWeb3.utils.fromWei(myWeb3.eth.abi.decodeParameter('uint256', ret)));
+        }
+    });
+}
+
+// 总提案的金额
+ethUtil.getProposedAmount = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'totalPaidSut',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('总提案的金额为', myWeb3.utils.fromWei(myWeb3.eth.abi.decodeParameter('uint256', ret)));
+        }
+    });
+}
+
+// 提案投票时间
+ethUtil.proposedVotingPeriod = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'votingPeriod',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            var timeArr = myWeb3.eth.abi.decodeParameters(['uint256', 'uint256'], ret);
+            var start = new Date(parseInt(timeArr[0]) * 1000)
+            var end = new Date(parseInt(timeArr[1]) * 1000)
+            console.log('提案投票时间为 ', start, " ~ ", end);
+        }
+    });
+}
+
+// 提案投票
+ethUtil.doProposedVote = function (vote) {
+
+    var decodeVote;
+    if (vote === true || vote === 'true') {
+        decodeVote = true
+    } else {
+        decodeVote = false
+    }
+
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'vote',
+        type: 'function',
+        inputs: [
+            {
+                type: 'bool'
+            }
+        ]
+    }, [decodeVote]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('提案投票成功，交易hash为：', ret);
+        }
+    });
+}
+
+// 查询提案陪审员
+ethUtil.getProposedJurors = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'jurors',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('提案陪审员为', myWeb3.eth.abi.decodeParameter('address[]', ret));
+        }
+    });
+}
+
+// 查询提案陪审员的投票
+ethUtil.getProposedVote = function() {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'jurorVotes',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('陪审员投票为', myWeb3.eth.abi.decodeParameter('uint8[]', ret));
+        }
+    });
+}
+
+// 投票完结
+ethUtil.proposedVoteDone = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'conclude',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('提案投票完结，交易hash为：', ret);
+        }
+    });
 }
 
 

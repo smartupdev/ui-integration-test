@@ -120,6 +120,7 @@ $(function() {
     ethUtil.getTotalTradeSut()
   })
 
+  // 交易
   $('#getBidQuote').on('click', function () {
     var ctAmount = $('#bidQuoteInput').val()
     ethUtil.getBidQuote(ctAmount)
@@ -136,6 +137,130 @@ $(function() {
     ethUtil.bidCt(bidPrice, bidAmount)
   })
   
+  $('#askCt').on('click', function () {
+    var ctAmount = $('#askInput').val();
+    ethUtil.askCt(ctAmount)
+  })
+
+  // 争议
+  // Dispute = Flag
+
+  $('#marketState').on('click', function () {
+    ethUtil.marketState()
+  })
+
+  $('#nextFlaggableDate').on('click', function () {
+    ethUtil.nextFlaggableDate()
+  })
+
+  $('#createDispute').on('click', function () {
+    var amount = $('#disputeAmount').val()
+    ethUtil.createDispute(amount)
+  })
+
+  $('#flaggingPeriod').on('click', function () {
+    ethUtil.flaggingPeriod()
+  })
+
+  $('#getDisputeCount').on('click', function () {
+    ethUtil.getDisputeCount()
+  })
+
+  $('#getDisputeAmount').on('click', function () {
+    ethUtil.getDisputeAmount()
+  })
+
+  $('#getDisputeAddresses').on('click', function () {
+    ethUtil.getDisputeAddresses()
+  })
+
+  // 争议投票
+
+  $('#flagVotingPeriod').on('click', function () {
+    ethUtil.flagVotingPeriod()
+  })
+
+  $('#jurorVote').on('click', function () {
+    var vote = $('#disputeVote').val()
+    ethUtil.jurorVote(vote)
+  })
+
+  $('#jurorVoteDone').on('click', function () {
+    ethUtil.jurorVoteDone()
+  })
+
+  $('#disputeDone').on('click', function () {
+    ethUtil.disputeDone()
+  })
+
+  $('#getJurorSize').on('click', function () {
+    ethUtil.getJurorSize()
+  })
+
+  $('#getJurorList').on('click', function () {
+    ethUtil.getJurorList()
+  })
+
+  $('#getJurorVotes').on('click', function () {
+    ethUtil.getJurorVotes()
+  })
+
+  // 争议上诉
+
+  $('#appealRound').on('click', function () {
+    ethUtil.appealRound()
+  })
+
+  $('#appealingPeriod').on('click', function () {
+    ethUtil.appealingPeriod()
+  })
+
+  $('#doAppeal').on('click', function () {
+    ethUtil.doAppeal()
+  })
+
+  $('#marketDissolve').on('click', function () {
+    ethUtil.marketDissolve()
+  })
+
+  // 提案
+
+  $('#doProposed').on('click', function () {
+    var amount = $('#proposedAmount').val()
+    ethUtil.doProposed(amount)
+  })
+
+  $('#getCurrentProposedAmount').on('click', function () {
+    ethUtil.getCurrentProposedAmount()
+  })
+
+  $('#getProposedAmount').on('click', function () {
+    ethUtil.getProposedAmount()
+  })
+
+  // 提案投票
+
+  $('#proposedVotingPeriod').on('click', function () {
+    ethUtil.proposedVotingPeriod()
+  })
+
+  $('#doProposedVote').on('click', function () {
+    var vote = $('#proposedVote').val()
+    ethUtil.doProposedVote(vote)
+  })
+
+  $('#getProposedJurors').on('click', function () {
+    ethUtil.getProposedJurors();
+  })
+
+  $('#getProposedVote').on('click', function () {
+    ethUtil.getProposedVote();
+  })
+
+  $('#proposedVoteDone').on('click', function () {
+      ethUtil.proposedVoteDone()
+  })
+
   // ================================= ipfs ======================================
 
   $('#postIpfsJson').on('click', () => {
@@ -193,7 +318,7 @@ $(function() {
 
   })
 
-  // =====================================================================
+  // ================================== bigchain ===================================
 
   $('#bigchainPut').on('click', () => {
     bigchain.put()
