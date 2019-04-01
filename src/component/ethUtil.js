@@ -15,10 +15,12 @@ var ethUtil = {}
 // Smartup_v5: 0x764fc672d656c6c89899467eb242d65eea5f7f0a
 // Smartup_v6: 0xbdfd50a794478ffb7c31fd8b3631e171e4f90949
 // Smartup_v7: 0x5233fe9818f8296f8b89650162f55135876cb686
+// Smartup_v8: 0x3f277470424e889a7c4a17c11cd190b28ba7b7c7
+// Smartup_v9: 0x0fe210cce8343bfc93678d88de0a082c2bb3476f
 // NTT：0xA01f5244B17b0D206903ac40A940FE981768090d
 
-var sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
-var smartupContractAddress = '0x5233fe9818f8296f8b89650162f55135876cb686';
+const sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
+const smartupContractAddress = '0x0fe210cce8343bfc93678d88de0a082c2bb3476f';
 
 if (!window.web3) {
     alert('请先安装metamask');
@@ -158,28 +160,6 @@ ethUtil.getCtBalance = function () {
             console.log(err, ret);
         } else {
             console.log('CT余额为', myWeb3.utils.fromWei(ret));
-        }
-    });
-}
-
-// 是否可以交易
-ethUtil.isTradeEnabled = function() {
-    // encode function
-    var data = myWeb3.eth.abi.encodeFunctionCall({
-        name: 'tradeEnabled',
-        type: 'function',
-        inputs: []
-    }, []);
-
-    // call
-    myWeb3.eth.call({
-        to: marketAddress,
-        data: data
-    }, function (err, ret) {
-        if(err) {
-            console.log(err, ret);
-        } else {
-            console.log('市场是否可以交易:', myWeb3.eth.abi.decodeParameter('bool', ret));
         }
     });
 }

@@ -108,10 +108,6 @@ $(function() {
     ethUtil.getCtBalance()
   })
 
-  $('#isTradeEnabled').on('click', function () {
-    ethUtil.isTradeEnabled()
-  })
-
   $('#getCreator').on('click', function () {
     ethUtil.getCreator()
   })
