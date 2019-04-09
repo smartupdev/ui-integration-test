@@ -19,15 +19,22 @@ var ethUtil = {}
 // Smartup_v9: 0x0fe210cce8343bfc93678d88de0a082c2bb3476f
 // NTT：0xA01f5244B17b0D206903ac40A940FE981768090d
 
-const sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
-const smartupContractAddress = '0x0fe210cce8343bfc93678d88de0a082c2bb3476f';
+// const sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
+// const smartupContractAddress = '0x0fe210cce8343bfc93678d88de0a082c2bb3476f';
+
+// ropsten
+const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
+const smartupContractAddress = '0x437098700e7de348e436b809c74bb2442abd3bd6';
+const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
 
 if (!window.web3) {
     alert('请先安装metamask');
 }
 
 const myWeb3 = new Web3(web3.currentProvider);
+window.myWeb3 = myWeb3;
 // console.log('myWeb3 : ', myWeb3);
+
 
 
 // ----------------------------------- 市场 ----------------------------------------------------
@@ -35,6 +42,7 @@ const myWeb3 = new Web3(web3.currentProvider);
 // CT市场地址
 var marketAddress = '';
 
+// SUT余额
 ethUtil.balanceOf = function() {
 
     // encode function
@@ -62,6 +70,33 @@ ethUtil.balanceOf = function() {
 
 }
 
+// NTT余额
+ethUtil.nttBalanceOf = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'checkCredit',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address'
+            }
+        ]
+    }, [window.account]);
+
+    // call
+    myWeb3.eth.call({
+        to: nttContractAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            var val = myWeb3.eth.abi.decodeParameter('uint256', ret);
+            // myWeb3.utils.fromWei(ret)
+            console.log('NTT余额为', val);    
+        }
+    });
+}
 
 ethUtil.createMarket = function() {
 

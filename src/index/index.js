@@ -7,7 +7,15 @@ import {ethUtil} from '../component/ethUtil'
 
 var account;
 
+
 $(function() {
+
+  if (typeof window.ethereum !== 'undefined' && typeof window.web3 !== 'undefined') {
+    setTimeout(function () {
+      $('#connectMateMaskBtn').click();
+      $('#getBalance').click();
+    }, 1000)
+  }
 
   // https://metamask.github.io/metamask-docs/Main_Concepts/Getting_Started
 
@@ -18,16 +26,21 @@ $(function() {
       return;
     }
 
-    console.log('ethereum = ', ethereum, 'web3 = ', web3);
+    console.log('ethereum = ', ethereum);
+    console.log('web3 = ', web3);
 
     // MateMask登录授权
-    ethereum.enable().then((accounts) => {
-      account = accounts[0];
-      window.account = accounts[0];
-      $('#publicKey').html(account);
-    }).catch((e)=> {
-      console.log('MateMask login error = ',e);
-    });
+    // ethereum.enable().then((accounts) => {
+    //   account = accounts[0];
+    //   window.account = accounts[0];
+    //   
+    // }).catch((e)=> {
+    //   console.log('MateMask login error = ',e);
+    // });
+
+    window.account = web3.eth.accounts[0];
+    account = web3.eth.accounts[0];
+    $('#publicKey').html(window.account);
     
     // 获取当前连接的网络
     var network = 'ID=' + web3.version.network + ', ';
@@ -53,9 +66,10 @@ $(function() {
   });
 
   $('#getBalance').on('click', () => {
-    if(!account){
-      alert('请先连接MateMask');
-    }
+    // if(!account){
+    //   alert('请先连接MateMask');
+    // }
+    var account = web3.eth.accounts[0]
     // account = web3.eth.coinbase;
     web3.eth.getBalance(account, (err, balance) => {
       if(err) {
@@ -68,9 +82,6 @@ $(function() {
   });
 
   $('#transaction').on('click', () => {
-    if(!account){
-      alert('请先连接MateMask');
-    }
     web3.eth.sendTransaction({
       from: account,
       to: account.substring(2),
@@ -83,10 +94,28 @@ $(function() {
     })
   });
 
+  // 签名
+  $('#signature').on('click', function () {
+    var msg = 'wjmdnueigsejgxip';
+    web3.personal.sign(msg, account, (err, ret) => {
+      if (err) {
+        console.log('err', err)
+      } else {
+        console.log('account: ', account)
+        console.log('msg: ', msg)
+        console.log('sign: ', ret)
+      }
+    })
+  })
+
   // ================================== eth  =====================================
 
   $('#balanceOf').on('click', function () {
     ethUtil.balanceOf()
+  })
+
+  $('#nttBalanceOf').on('click', function () {
+    ethUtil.nttBalanceOf()
   })
 
   $('#createMarket').on('click', function () {
