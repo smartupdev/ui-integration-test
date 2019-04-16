@@ -24,7 +24,7 @@ var ethUtil = {}
 
 // ropsten
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
-const smartupContractAddress = '0xaa25a939491b00348f52941669e16ac6d54af245';
+const smartupContractAddress = '0x437098700e7de348e436b809c74bb2442abd3bd6';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
 
 if (!window.web3) {
@@ -1137,6 +1137,28 @@ ethUtil.proposedVoteDone = function () {
             console.log(err);
         } else {
             console.log('提案投票完结，交易hash为：', ret);
+        }
+    });
+}
+
+//查询ct发行量
+ethUtil.getCtTotoalSupply = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'totalSupply',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // transaction
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('ct 的发行量为：', myWeb3.utils.fromWei(ret));
         }
     });
 }

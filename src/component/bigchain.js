@@ -1,4 +1,4 @@
-const driver = require('bigchaindb-driver')
+const driver = {}
 
 var bigchain = {}
 
