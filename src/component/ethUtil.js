@@ -1141,5 +1141,27 @@ ethUtil.proposedVoteDone = function () {
     });
 }
 
+//查询ct发行量
+ethUtil.getCtTotoalSupply = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'totalSupply',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // transaction
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('ct 的发行量为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+}
+
 
 export {ethUtil}

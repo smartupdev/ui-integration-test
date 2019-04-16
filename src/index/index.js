@@ -2,7 +2,7 @@ import $ from 'jquery'
 import {ipfs} from '../component/ipfs'
 // import {orbitdb} from '../component/orbitdb'
 // import {gun} from '../component/gun'
-import {bigchain} from '../component/bigchain'
+// import {bigchain} from '../component/bigchain'
 import {ethUtil} from '../component/ethUtil'
 
 var account;
@@ -135,6 +135,10 @@ $(function() {
 
   $('#getCtBalance').on('click', function () {
     ethUtil.getCtBalance()
+  })
+
+  $('#getCtTotalSupply').on('click', function () {
+    ethUtil.getCtTotoalSupply()
   })
 
   $('#getCreator').on('click', function () {
