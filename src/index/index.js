@@ -96,7 +96,7 @@ $(function() {
 
   // 签名
   $('#signature').on('click', function () {
-    var msg = 'wjmdnueigsejgxip';
+    var msg = $('#signText').val();
     web3.personal.sign(msg, account, (err, ret) => {
       if (err) {
         console.log('err', err)

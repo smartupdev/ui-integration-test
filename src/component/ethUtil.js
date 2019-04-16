@@ -24,7 +24,7 @@ var ethUtil = {}
 
 // ropsten
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
-const smartupContractAddress = '0x437098700e7de348e436b809c74bb2442abd3bd6';
+const smartupContractAddress = '0xaa25a939491b00348f52941669e16ac6d54af245';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
 
 if (!window.web3) {
