@@ -141,10 +141,6 @@ $(function() {
     ethUtil.getCtTotoalSupply()
   })
 
-  $('#getCtTotalSupply').on('click', function () {
-    ethUtil.getCtTotoalSupply()
-  })
-
   $('#getCreator').on('click', function () {
     ethUtil.getCreator()
   })
