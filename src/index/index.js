@@ -133,21 +133,54 @@ $(function() {
     ethUtil.setMarketAddress(addr)
   })
 
+  //获取当前账户ct余额
   $('#getCtBalance').on('click', function () {
     ethUtil.getCtBalance()
   })
 
+  //获取Ct市场发行量
   $('#getCtTotalSupply').on('click', function () {
     ethUtil.getCtTotoalSupply()
   })
 
+  //获取Ct市场创建者
   $('#getCreator').on('click', function () {
     ethUtil.getCreator()
   })
 
+  //获取Ct市场上交易的SUT
   $('#getTotalTradeSut').on('click', function () {
     ethUtil.getTotalTradeSut()
   })
+
+  //发起内容提案
+  $('#propose').on('click', function () {
+    var choiceNum = $('#choiceNum').val()
+    var validTime = $('#validTime').val()
+    ethUtil.propose(choiceNum, validTime)
+  })
+
+  //为内容提案投票
+  $('#voteForProposal').on('click', function () {
+    var mychoice = $('#mychoice').val()
+    var ctAmount = $('#ctAmount').val()
+    var _proposalId = $('#_proposalId').val()
+    ethUtil.voteForProposal(mychoice, ctAmount, _proposalId)
+  })
+
+  //内容提案结束，撤回Ct
+  $('#withdrawProposalCt').on('click', function () {
+    var proposalId = $('#proposalId').val()
+    ethUtil.withdrawProposalCt(proposalId)
+  })
+
+
+  //获取内容提案的内容
+  $('#getProposal').on('click', function () {
+    var proposalId_ = $('#proposalId_').val()
+    ethUtil.getProposal(proposalId_)
+  })
+
 
   // 交易
   $('#getBidQuote').on('click', function () {
