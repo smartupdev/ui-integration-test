@@ -57,8 +57,6 @@
 
   <p><button id="getCtTotalSupply">CT发行量查询</button></p>
 
-
-
   <h5>交易</h5>
 
   <p>
@@ -165,6 +163,35 @@
 
   <p><button id="proposedVoteDone">* 完结投票</button></p>
 
+  <h5>内容提案</h5>
+
+  <p>
+    <input id="choiceNum" type="text" value=""/>
+    <input id="validTime" type="text" value=""/>
+    <button id="propose">发起内容提案(选项：2-5，有效期：0，3，5，7)</button>
+  </p>
+
+  <h5>内容提案投票</h5>
+
+  <p>
+    <input id="mychoice" type="text" value=""/>
+    <input id="ctAmount" type="text" value=""/>
+    <input id="_proposalId" type="text" value=""/>
+    <button id="voteForProposal">为内容提案投票(选项，CT数量，内容投票ID)</button>
+  </p>
+
+  <h5>内容提案到期，撤回Ct</h5>
+  <p>
+    <input id="proposalId" type="text" value=""/>
+    <button id="withdrawProposalCt">投票时间截至为内容提案ID撤回Ct(内容提案ID)</button>
+  </p>
+
+  <h5>查询内容提案详情</h5>
+
+  <p>
+    <input id="proposalId_" type="text" value=""/>
+    <button id="getProposal">获取Ct市场内容提案的信息</button>
+  </p>
 
   <br><br><br>
 
