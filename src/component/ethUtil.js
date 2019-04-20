@@ -70,6 +70,158 @@ ethUtil.balanceOf = function() {
 
 }
 
+//发起内容提案
+ethUtil.propose = function(choiceNum, validTime) {
+    var num = myWeb3.eth.abi.encodeParameter('uint8', choiceNum);
+    var time =  myWeb3.eth.abi.encodeParameter('uint8', validTime);
+     
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'propose',
+        type: 'function',
+        inputs: [
+            {
+                type: 'uint8',
+                name: 'choiceNum'
+            },
+            {
+                type: 'uint8',
+                name: 'validTime'
+            }
+        ]
+    }, [num, time]);
+
+    // call
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('发起内容提案成功，交易哈希为： ', ret);    
+        }
+    });
+}
+
+//为内容提案投票
+ethUtil.voteForProposal = function(mychoice, ctAmount, _proposalId) {
+    ctAmount = myWeb3.utils.toWei(ctAmount);
+    var choice = myWeb3.eth.abi.encodeParameter('uint8', mychoice);
+    var ct =  myWeb3.eth.abi.encodeParameter('uint256', ctAmount);
+    
+    //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
+     
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'voteForProposal',
+        type: 'function',
+        inputs: [
+            {
+                type: 'uint8',
+                name: 'mychoice'
+            },
+            {
+                type: 'uint256',
+                name: 'ctAmount'
+            },
+            {
+                type: 'bytes32',
+                name: '_proposalId'
+            }
+        ]
+    }, [choice, ct, _proposalId]);
+
+    // call
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            // myWeb3.utils.fromWei(ret)
+            console.log('为内容提案投票成功, 交易哈希为： ', ret);    
+        }
+    });
+
+}
+
+//内容提案到期，为内容提案撤回Ct
+ethUtil.withdrawProposalCt = function(_proposalId) {
+    //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
+     
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'withdrawProposalCt',
+        type: 'function',
+        inputs: [
+            {
+                type: 'bytes32',
+                name: '_proposalId'
+            }
+        ]
+    }, [_proposalId]);
+
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: marketAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            // myWeb3.utils.fromWei(ret)
+            console.log('内容提案到期,撤回CT成功 交易哈希为： ', ret);    
+        }
+    });
+
+}
+
+//查询内容提案详情
+ethUtil.getProposal = function(_proposalId) {
+    //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
+    // console.log(_proposalId);
+    
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'getProposal',
+        type: 'function',
+        inputs: [
+            {
+                type: 'bytes32',
+                name: '_proposalId'
+            }
+        ]
+    }, [_proposalId]);
+
+    // call
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            var ctInfo = myWeb3.eth.abi.decodeParameters(['uint256', 'uint256[]', 'address[]', 'address'], ret);
+            var validTime = new Date(ctInfo[0] * 1000);
+            var voteDetails = ctInfo[1];
+            var voters = ctInfo[2];
+            var origin = ctInfo[3];
+            console.log('投票截止时间为: ', validTime);
+            console.log("投票详情为: ",voteDetails);
+            console.log("投票人有: ", voters);
+            console.log("投票发起人为: ", origin); 
+        }
+    });
+
+}
+
+
 // NTT余额
 ethUtil.nttBalanceOf = function () {
     // encode function
