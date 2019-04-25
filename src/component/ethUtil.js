@@ -1326,7 +1326,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
         }
     })
 
-    if (type == "1"){
+    if (type === "1"){
         myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
             if (err) {
                 console.log(err);
@@ -1366,7 +1366,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
             }
         })
 
-    }else if (type == "3"){
+    }else if (type === "3"){
         myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
             if (err) {
                 console.log(err);
