@@ -1313,7 +1313,131 @@ ethUtil.getCtTotoalSupply = function () {
             console.log('ct 的发行量为：', myWeb3.utils.fromWei(ret));
         }
     });
+
 }
+
+//查询交易
+ethUtil.getTransactionDetails = function (type, hash) {
+    myWeb3.eth.getTransaction(hash, function(err,ret){
+        if (err) {
+            console.log(err);
+        }else{
+            console.log(ret)
+        }
+    })
+
+    if (type == "1"){
+        myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
+            if (err) {
+                console.log(err);
+            }else {
+                if (ret.status == true) {
+                    console.log("transaction success ", ret.status)
+                }else{
+                    console.log("transaction failed ", ret.status)
+                }
+            }
+        })
+    }else if (type === "2"){
+
+        myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
+            if (err) {
+                console.log(err);
+            }else {
+                if (ret.status == true) {
+                    console.log("transaction success ", ret.status)
+                    var inputs = [{
+                        type: 'address',
+                        name: 'marketAddress'
+                    },{
+                        type: 'address',
+                        name: 'marketCreator'
+                    },{
+                        type: 'uint256',
+                        name: 'initialDeposit'
+                    }]
+                    var hexString = ret.logs[1].data
+                    var topics = ret.logs[1].topics
+                    var log = myWeb3.eth.abi.decodeLog(inputs, hexString, topics)
+                    console.log("create market with ", myWeb3.utils.fromWei(log.initialDeposit,"ether"), "sut")
+                }else{
+                    console.log("transaction failed ", ret.status)
+                }
+            }
+        })
+
+    }else if (type == "3"){
+        myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
+            if (err) {
+                console.log(err);
+            }else {
+                if (ret.status == true) {
+                    console.log("transaction success ", ret.status)
+                    //BuyCt(address _ctAddress, address _buyer, uint256 _setSut, uint256 _costSut, uint256 _ct);
+                    var inputs = [{
+                        type: 'address',
+                        name: '_ctAddress'
+                    },{
+                        type: 'address',
+                        name: '_buyer'
+                    },{
+                        type: 'uint256',
+                        name: '_setSut'
+                    },{
+                        type: 'uint256',
+                        name: '_costSut'   
+                    },{
+                        type: 'uint256',
+                        name: '_ct'   
+                    }]
+                    var hexString = ret.logs[1].data
+                    var topics = ret.logs[1].topics
+                    var log = myWeb3.eth.abi.decodeLog(inputs, hexString, topics)
+                    console.log("set sut amount: ", myWeb3.utils.fromWei(log._setSut,"ether"))
+                    console.log("cost sut amount: ", myWeb3.utils.fromWei(log._costSut,"ether"))
+                    console.log("buy ct amount: ", myWeb3.utils.fromWei(log._ct,"ether"))
+                }else{
+                    console.log("transaction failed ", ret.status)
+                }
+            }
+        })
+    }else{
+        myWeb3.eth.getTransactionReceipt(hash, function(err,ret){
+            if (err) {
+                console.log(err);
+            }else {
+                if (ret.status == true) {
+                    console.log("transaction success ", ret.status)
+                   // SellCt(address _ctAddress, address _sell, uint256 _sut, uint256 _ct);
+                    var inputs = [{
+                        type: 'address',
+                        name: '_ctAddress'
+                    },{
+                        type: 'address',
+                        name: '_sell'
+                    },{
+                        type: 'uint256',
+                        name: '_sut'
+                    },{
+                        type: 'uint256',
+                        name: '_ct'
+                    }]
+                    var hexString = ret.logs[1].data
+                    var topics = ret.logs[1].topics
+                    var log = myWeb3.eth.abi.decodeLog(inputs, hexString, topics)
+                    console.log("sell ct ", myWeb3.utils.fromWei(log._ct,"ether"))
+                    console.log("exchange sut ", myWeb3.utils.fromWei(log._sut,"ether"))
+                }else{
+                    console.log("transaction failed ", ret.status)
+                }
+            }
+        })
+    }
+
+
+}
+
+
 
 
 export {ethUtil}

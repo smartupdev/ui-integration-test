@@ -323,6 +323,14 @@ $(function() {
       ethUtil.proposedVoteDone()
   })
 
+
+  //查询交易
+  $('#getTransactionDetails').on('click', () => {
+    var type = $('#transactionType').val()
+    var hash = $('#transactionHash').val()
+    ethUtil.getTransactionDetails(type, hash)
+  })
+
   // ================================= ipfs ======================================
 
   $('#postIpfsJson').on('click', () => {
@@ -401,5 +409,6 @@ $(function() {
   $('#bigchainSearchOwner').on('click', () => {
     bigchain.searchOwner()
   })
+
 
 });
