@@ -24,7 +24,8 @@ var ethUtil = {}
 
 // ropsten
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
-const smartupContractAddress = '0x58327b616e3a38c59c587e5166bb7531088ba0d5';
+//const smartupContractAddress = '0x58327b616e3a38c59c587e5166bb7531088ba0d5';
+const smartupContractAddress = '0x251f33ffac9b764911b06dffc2e4a668db02288f';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
 
 if (!window.web3) {
@@ -101,7 +102,7 @@ ethUtil.propose = function(choiceNum, validTime) {
         if (err) {
             console.log(err, ret);
         } else {
-            console.log('发起内容提案成功，交易哈希为： ', ret);    
+            console.log('发送发起内容提案交易，交易哈希为： ', ret);    
         }
     });
 }
@@ -145,7 +146,7 @@ ethUtil.voteForProposal = function(mychoice, ctAmount, _proposalId) {
             console.log(err, ret);
         } else {
             // myWeb3.utils.fromWei(ret)
-            console.log('为内容提案投票成功, 交易哈希为： ', ret);    
+            console.log('发送为内容提案投票交易, 交易哈希为： ', ret);    
         }
     });
 
@@ -177,7 +178,7 @@ ethUtil.withdrawProposalCt = function(_proposalId) {
             console.log(err, ret);
         } else {
             // myWeb3.utils.fromWei(ret)
-            console.log('内容提案到期,撤回CT成功 交易哈希为： ', ret);    
+            console.log('内容提案到期,发送撤回CT交易， 交易哈希为： ', ret);    
         }
     });
 
@@ -1334,7 +1335,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
                 if (ret.status === true) {
                     console.log("transaction success ", ret.status)
                 }else{
-                    console.log("transaction failed ", ret.status)
+                    console.log("transaction failed", ret.status)
                 }
             }
         })
