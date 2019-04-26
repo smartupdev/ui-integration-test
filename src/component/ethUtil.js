@@ -1331,7 +1331,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
             if (err) {
                 console.log(err);
             }else {
-                if (ret.status == true) {
+                if (ret.status === true) {
                     console.log("transaction success ", ret.status)
                 }else{
                     console.log("transaction failed ", ret.status)
@@ -1344,7 +1344,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
             if (err) {
                 console.log(err);
             }else {
-                if (ret.status == true) {
+                if (ret.status === true) {
                     console.log("transaction success ", ret.status)
                     var inputs = [{
                         type: 'address',
@@ -1371,7 +1371,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
             if (err) {
                 console.log(err);
             }else {
-                if (ret.status == true) {
+                if (ret.status === true) {
                     console.log("transaction success ", ret.status)
                     //BuyCt(address _ctAddress, address _buyer, uint256 _setSut, uint256 _costSut, uint256 _ct);
                     var inputs = [{
@@ -1406,7 +1406,7 @@ ethUtil.getTransactionDetails = function (type, hash) {
             if (err) {
                 console.log(err);
             }else {
-                if (ret.status == true) {
+                if (ret.status === true) {
                     console.log("transaction success ", ret.status)
                    // SellCt(address _ctAddress, address _sell, uint256 _sut, uint256 _ct);
                     var inputs = [{
