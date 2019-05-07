@@ -25,7 +25,8 @@ var ethUtil = {}
 // ropsten
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 //const smartupContractAddress = '0x58327b616e3a38c59c587e5166bb7531088ba0d5';
-const smartupContractAddress = '0x251f33ffac9b764911b06dffc2e4a668db02288f';
+//const smartupContractAddress = '0x251f33ffac9b764911b06dffc2e4a668db02288f';
+const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
 
 if (!window.web3) {
