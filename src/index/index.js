@@ -13,7 +13,6 @@ $(function() {
   if (typeof window.ethereum !== 'undefined' && typeof window.web3 !== 'undefined') {
     setTimeout(function () {
       $('#connectMateMaskBtn').click();
-      $('#getBalance').click();
     }, 1000)
   }
 
@@ -30,38 +29,46 @@ $(function() {
     console.log('web3 = ', web3);
 
     // MateMask登录授权
-    // ethereum.enable().then((accounts) => {
-    //   account = accounts[0];
-    //   window.account = accounts[0];
-    //   
-    // }).catch((e)=> {
-    //   console.log('MateMask login error = ',e);
-    // });
+    ethereum.enable().then((accounts) => {
 
-    window.account = web3.eth.accounts[0];
-    account = web3.eth.accounts[0];
-    $('#publicKey').html(window.account);
-    
-    // 获取当前连接的网络
-    var network = 'ID=' + web3.version.network + ', ';
-    switch (web3.version.network) {
-      case '1':
-        network += '主网络';
-        break;
-      case '3':
-        network += 'Ropsten测试网络';
-        break;
-      case '4':
-        network += 'Rinkeby测试网络';
-        break;
-      case '42':
-        network += 'Kovan测试网络';
-        break;
-      default:
-        network += '测试网络';
-        break;
-    }
-    $('#netId').html(network);
+      account = accounts[0];
+      window.account = accounts[0];
+
+      window.account = web3.eth.accounts[0];
+      account = web3.eth.accounts[0];
+      $('#publicKey').html(window.account);
+
+      // 获取当前连接的网络
+      var network = 'ID=' + web3.version.network + ', ';
+      switch (web3.version.network) {
+          case '1':
+              network += '主网络';
+              break;
+          case '3':
+              network += 'Ropsten测试网络';
+              break;
+          case '4':
+              network += 'Rinkeby测试网络';
+              break;
+          case '42':
+              network += 'Kovan测试网络';
+              break;
+          default:
+              network += '测试网络';
+              break;
+      }
+
+      $('#netId').html(network);
+
+      $('#getBalance').click();
+
+
+    }).catch((e)=> {
+      alert('Metamask 授权失败');
+      console.log('MateMask login error = ',e);
+    });
+
+
   
   });
 
