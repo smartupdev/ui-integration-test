@@ -19,7 +19,7 @@ $(function() {
   // https://metamask.github.io/metamask-docs/Main_Concepts/Getting_Started
 
   $('#connectMateMaskBtn').on('click', () => {
-    
+
     if (typeof window.ethereum === 'undefined' || typeof window.web3 === 'undefined') {
       alert('浏览器未安装MateMask插件，或者被禁用');
       return;
@@ -69,7 +69,7 @@ $(function() {
     });
 
 
-  
+
   });
 
   $('#getBalance').on('click', () => {
@@ -205,7 +205,7 @@ $(function() {
     var bidAmount = $('#bidAmountInput').val()
     ethUtil.bidCt(bidPrice, bidAmount)
   })
-  
+
   $('#askCt').on('click', function () {
     var ctAmount = $('#askInput').val();
     ethUtil.askCt(ctAmount)
@@ -417,5 +417,17 @@ $(function() {
     bigchain.searchOwner()
   })
 
+
+  // ============================= 平台升级 ============================================
+
+  $('#chargeSutBtn').on('click', function () {
+    let sut = $('#chargeSutInput').val();
+    ethUtil.chargeSut(sut);
+  });
+
+  $('#chargeEthBtn').on('click', function () {
+    let sut = $('#chargeEthInput').val();
+    ethUtil.chargeEth(sut);
+  })
 
 });

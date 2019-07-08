@@ -2,32 +2,12 @@ import Web3 from 'web3';
 
 var ethUtil = {}
 
-// ropsten smartup 合约地址
-// var contractAddress = '0x3ef4716f0a2456ac232034bb3898d41c2baa63ee';  
-// 正式链 smartup 合约地址
-// var contractAddress = '0x78f5bbc74fb9137a75d85f3c9c3c599be49f0a56';
-
-// SUT：0xff06baccd44400a356ba64a9aba4d76cb1c99847
-// Smartup：  0xb03aba8d576c499277f7e0946d55f30a07be39be
-// Smartup_v2: 0x4a578e911ac8a00e4eae3c357b78b4c66aefc30e
-// Smartup_v3: 0x8f06e2fdcedba35f5ec853b099ed32b87516e9d2
-// Smartup_v4: 0x670a06f7a4306232f027a10bb90892f27f6b1208
-// Smartup_v5: 0x764fc672d656c6c89899467eb242d65eea5f7f0a
-// Smartup_v6: 0xbdfd50a794478ffb7c31fd8b3631e171e4f90949
-// Smartup_v7: 0x5233fe9818f8296f8b89650162f55135876cb686
-// Smartup_v8: 0x3f277470424e889a7c4a17c11cd190b28ba7b7c7
-// Smartup_v9: 0x0fe210cce8343bfc93678d88de0a082c2bb3476f
-// NTT：0xA01f5244B17b0D206903ac40A940FE981768090d
-
-// const sutContractAddress = '0xff06baccd44400a356ba64a9aba4d76cb1c99847';
-// const smartupContractAddress = '0x0fe210cce8343bfc93678d88de0a082c2bb3476f';
 
 // ropsten
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
-//const smartupContractAddress = '0x58327b616e3a38c59c587e5166bb7531088ba0d5';
-//const smartupContractAddress = '0x251f33ffac9b764911b06dffc2e4a668db02288f';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
+const exchangeContractAddress = '0x2283026625a1cde61ef77a478b6415fcd66924ac';
 
 if (!window.web3) {
     alert('请先安装metamask');
@@ -66,7 +46,7 @@ ethUtil.balanceOf = function() {
         if (err) {
             console.log(err, ret);
         } else {
-            console.log('SUT余额为', myWeb3.utils.fromWei(ret));    
+            console.log('SUT余额为', myWeb3.utils.fromWei(ret));
         }
     });
 
@@ -76,7 +56,7 @@ ethUtil.balanceOf = function() {
 ethUtil.propose = function(choiceNum, validTime) {
     var num = myWeb3.eth.abi.encodeParameter('uint8', choiceNum);
     var time =  myWeb3.eth.abi.encodeParameter('uint8', validTime);
-     
+
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
         name: 'propose',
@@ -103,7 +83,7 @@ ethUtil.propose = function(choiceNum, validTime) {
         if (err) {
             console.log(err, ret);
         } else {
-            console.log('发送发起内容提案交易，交易哈希为： ', ret);    
+            console.log('发送发起内容提案交易，交易哈希为： ', ret);
         }
     });
 }
@@ -113,9 +93,9 @@ ethUtil.voteForProposal = function(mychoice, ctAmount, _proposalId) {
     ctAmount = myWeb3.utils.toWei(ctAmount);
     var choice = myWeb3.eth.abi.encodeParameter('uint8', mychoice);
     var ct =  myWeb3.eth.abi.encodeParameter('uint256', ctAmount);
-    
+
     //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
-     
+
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
         name: 'voteForProposal',
@@ -147,7 +127,7 @@ ethUtil.voteForProposal = function(mychoice, ctAmount, _proposalId) {
             console.log(err, ret);
         } else {
             // myWeb3.utils.fromWei(ret)
-            console.log('发送为内容提案投票交易, 交易哈希为： ', ret);    
+            console.log('发送为内容提案投票交易, 交易哈希为： ', ret);
         }
     });
 
@@ -156,7 +136,7 @@ ethUtil.voteForProposal = function(mychoice, ctAmount, _proposalId) {
 //内容提案到期，为内容提案撤回Ct
 ethUtil.withdrawProposalCt = function(_proposalId) {
     //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
-     
+
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
         name: 'withdrawProposalCt',
@@ -179,7 +159,7 @@ ethUtil.withdrawProposalCt = function(_proposalId) {
             console.log(err, ret);
         } else {
             // myWeb3.utils.fromWei(ret)
-            console.log('内容提案到期,发送撤回CT交易， 交易哈希为： ', ret);    
+            console.log('内容提案到期,发送撤回CT交易， 交易哈希为： ', ret);
         }
     });
 
@@ -189,7 +169,7 @@ ethUtil.withdrawProposalCt = function(_proposalId) {
 ethUtil.getProposal = function(_proposalId) {
     //var id = myWeb3.eth.abi.encodeParameter('bytes32', _proposalId);
     // console.log(_proposalId);
-    
+
     var data = myWeb3.eth.abi.encodeFunctionCall({
         name: 'getProposal',
         type: 'function',
@@ -217,7 +197,7 @@ ethUtil.getProposal = function(_proposalId) {
             console.log('投票截止时间为: ', validTime);
             console.log("投票详情为: ",voteDetails);
             console.log("投票人有: ", voters);
-            console.log("投票发起人为: ", origin); 
+            console.log("投票发起人为: ", origin);
         }
     });
 
@@ -247,7 +227,7 @@ ethUtil.nttBalanceOf = function () {
         } else {
             var val = myWeb3.eth.abi.decodeParameter('uint256', ret);
             // myWeb3.utils.fromWei(ret)
-            console.log('NTT余额为', val);    
+            console.log('NTT余额为', val);
         }
     });
 }
@@ -305,7 +285,7 @@ ethUtil.getMarketByIndex = function(index) {
             }
         ]
     }, [decodeIndex]);
-    
+
     // call
     myWeb3.eth.call({
         to: smartupContractAddress,
@@ -456,7 +436,7 @@ ethUtil.getBidQuote = function (ctAmount) {
 ethUtil.getAskQuote = function (ctAmount) {
     ctAmount = myWeb3.utils.toWei(ctAmount)
     var encodeCtAmount = myWeb3.eth.abi.encodeParameter('uint256', ctAmount);
-    
+
     // encode function
     var data = myWeb3.eth.abi.encodeFunctionCall({
         name: 'askQuote',
@@ -486,7 +466,7 @@ ethUtil.getAskQuote = function (ctAmount) {
 ethUtil.bidCt = function (ctPrice, ctAmount) {
     // 买入CT 调用SUT合约地址
     // 函数 approveAndCall
-    // 参数 CT地址， quote价格*1.1，CT数量 
+    // 参数 CT地址， quote价格*1.1，CT数量
 
     var decodeCtPrice = myWeb3.utils.toWei(ctPrice);
     // console.log('decodeCtPrice:', decodeCtPrice);
@@ -597,14 +577,14 @@ ethUtil.nextFlaggableDate = function () {
 
 // 发起争议
 ethUtil.createDispute = function (sutAmount) {
-    
+
     var sutAmountWei = myWeb3.utils.toWei(sutAmount);
     console.log('window.account', window.account)
     console.log('sutContractAddress', sutContractAddress)
     console.log('smartupContractAddress ', smartupContractAddress);
     console.log('sutAmountWei ', sutAmountWei);
     console.log('marketAddress ', marketAddress);
-    
+
     var extraData = '0x0000000000000000000000' + marketAddress.substr(2, 40) + '02';
     console.log('extraData ', extraData);
 
@@ -1387,10 +1367,10 @@ ethUtil.getTransactionDetails = function (type, hash) {
                         name: '_setSut'
                     },{
                         type: 'uint256',
-                        name: '_costSut'   
+                        name: '_costSut'
                     },{
                         type: 'uint256',
-                        name: '_ct'   
+                        name: '_ct'
                     }]
                     var hexString = ret.logs[1].data
                     var topics = ret.logs[1].topics
@@ -1437,7 +1417,71 @@ ethUtil.getTransactionDetails = function (type, hash) {
     }
 
 
-}
+};
+
+
+ethUtil.chargeSut = function(sut) {
+    let sutWei = myWeb3.utils.toWei(sut + '');
+    // encode function
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'approveAndCall',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: '_spender'
+            },
+            {
+                type: 'uint256',
+                name: '_value'
+            },
+            {
+                type: 'bytes',
+                name: '_extraData'
+            }
+        ]
+    }, [exchangeContractAddress, sutWei, '0x0000000000000000000000000000000000000000000000000000000000000000']);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: sutContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('充值成功，交易hash为：', ret);
+        }
+    });
+
+};
+
+ethUtil.chargeEth = function(eth) {
+    let ethWei = myWeb3.utils.toWei(eth + '');
+    // encode function
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'depositEther',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: exchangeContractAddress,
+        value: ethWei,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('充值成功，交易hash为：', ret);
+        }
+    });
+
+};
 
 
 
