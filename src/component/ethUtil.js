@@ -1483,7 +1483,65 @@ ethUtil.chargeEth = function(eth) {
 
 };
 
+ethUtil.querySutInPlatform = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'tokenBalance',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: 'token'
+            },
+            {
+                type: 'address',
+                name: 'address'
+            },
+        ]
+    }, [sutContractAddress, window.account]);
 
+    // transaction
+    myWeb3.eth.call({
+        to: exchangeContractAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('存入的SUT余额为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.queryEthInPlatform = function () {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'tokenBalance',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: 'token'
+            },
+            {
+                type: 'address',
+                name: 'address'
+            },
+        ]
+    }, ['0x0000000000000000000000000000000000000000', window.account]);
+
+    // transaction
+    myWeb3.eth.call({
+        to: exchangeContractAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('存入的SUT余额为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
 
 
 export {ethUtil}

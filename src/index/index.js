@@ -428,6 +428,14 @@ $(function() {
   $('#chargeEthBtn').on('click', function () {
     let sut = $('#chargeEthInput').val();
     ethUtil.chargeEth(sut);
-  })
+  });
+
+  $('#querySutInPlatform').on('click', function () {
+    ethUtil.querySutInPlatform()
+  });
+
+  $('#queryEthInPlatform').on('click', function () {
+    ethUtil.queryEthInPlatform()
+  });
 
 });
