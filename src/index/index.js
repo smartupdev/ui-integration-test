@@ -430,6 +430,16 @@ $(function() {
     ethUtil.chargeEth(sut);
   });
 
+  $('#withdrawSutBtn').click('click', function () {
+    let sut = $('#withdrawSutInput').val();
+    ethUtil.withdrawSut(sut);
+  });
+
+  $('#withdrawEthBtn').click('click', function () {
+    let eth = $('#withdrawEthInput').val();
+    ethUtil.withdrawEth(eth);
+  });
+
   $('#querySutInPlatform').on('click', function () {
     ethUtil.querySutInPlatform()
   });

@@ -1543,5 +1543,71 @@ ethUtil.queryEthInPlatform = function () {
     });
 };
 
+ethUtil.withdrawSut = function (sut) {
+    let sutWei = myWeb3.utils.toWei(sut + '');
+    // encode function
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'withdraw',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: 'token'
+            },
+            {
+                type: 'uint256',
+                name: 'amount'
+            }
+        ]
+    }, [sutContractAddress, sutWei]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: exchangeContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('提取成功，交易hash为：', ret);
+        }
+    });
+};
+
+ethUtil.withdrawEth = function (eth) {
+    let ethWei = myWeb3.utils.toWei(eth + '');
+    // encode function
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'withdraw',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: 'token'
+            },
+            {
+                type: 'uint256',
+                name: 'amount'
+            }
+        ]
+    }, ['0x0000000000000000000000000000000000000000', ethWei]);
+
+    // transaction
+    myWeb3.eth.sendTransaction({
+        from: window.account,
+        to: exchangeContractAddress,
+        value: '0x0',
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err, ret);
+        } else {
+            console.log('提取成功，交易hash为：', ret);
+        }
+    });
+};
+
 
 export {ethUtil}
