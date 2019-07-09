@@ -7,7 +7,7 @@ var ethUtil = {}
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
-const exchangeContractAddress = '0x2283026625a1cde61ef77a478b6415fcd66924ac';
+const exchangeContractAddress = '0x7d56a317ceda7083172757e88c2ba4576f9530da';
 
 if (!window.web3) {
     alert('请先安装metamask');
