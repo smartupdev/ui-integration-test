@@ -239,9 +239,11 @@
     <button id="getTransactionDetails">获取交易信息</button>
   </p>
 
+  <br/><br/>
+
   <h3>平台升级</h3>
 
-  <h5>充值</h5>
+  <h5>充值/提现</h5>
 
   <p>
     <input id="chargeSutInput" type="number" placeholder="SUT数量"/>
@@ -270,6 +272,42 @@
   <p>
     <button id="queryEthInPlatform">查询存入的ETH</button>
   </p>
+
+
+  <h5>创建市场</h5>
+
+  <p><b>签名方式</b></p>
+
+  <p>1. gas fee 计算方式</p>
+  <p>gasFee = gasPrice * gasLimit</p>
+  <p>gasLimit代表合约执行的“步骤”，在确定执行的参数后，见合约文档，每次合约更新该值会更新</p>
+  <p>gasPrice代表每“步骤”的花费，可以设置不同的档位，来决定交易的速度，例如 (5gwei 10gwei 20gwei)</p>
+  <p>(1ether = 1 * 10^9 gwei , 1gwei = 1 * 10^9 wei)</p>
+  <br/>
+
+  <p>2. hash</p>
+  <p>按照顺序对如下的数据做 userAddress, sut, marketId, marketId, ctCount, ctPrice, ctRecyclePrice, gasFee </p>
+  <p>需要注意</p>
+  <p>a) 所有数字都是以wei为单位，再转为字符串，最后toBN()</p>
+  <p>b) marketId出现了两次</p>
+  <p>let hash = web3.utils.soliditySha3(userAddress, web3.utils.toBN(sut), marketId, marketId, web3.utils.toBN(ctCount), web3.utils.toBN(ctPrice), web3.utils.toBN(ctRecyclePrice), web3.utils.toBN(gasFee))</p>
+  <br/>
+
+  <p>3.签名</p>
+  <p>直接使用签名方法，签名hash即可</p>
+  <p>let sign = web3.personal.sign(hash, userAddress)</p>
+  <br/>
+
+  <p><b>签名</b></p>
+  <p><input id="gl_sut" placeholder="sut"></p>
+  <p><input id="gl_marketId" placeholder="marketId"></p>
+  <p><input id="gl_ctCount" placeholder="ctCount"></p>
+  <p><input id="gl_ctPrice" placeholder="ctPrice"></p>
+  <p><input id="gl_ctRecyclePrice" placeholder="ctRecyclePrice"></p>
+  <p><input id="gl_gasLimit" placeholder="gasLimit"></p>
+  <p><input id="gl_gasPrice" placeholder="gasPrice"></p>
+  <p><button id="createMarketSign">签名</button></p>
+
 
   <br/><br/><br/>
   <br/><br/><br/>

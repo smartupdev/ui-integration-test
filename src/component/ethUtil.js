@@ -4,6 +4,7 @@ var ethUtil = {}
 
 
 // ropsten
+const adminAddress = '0xea997cfc8beF47730DFd8716A300bDAB219c1f89';
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
@@ -1607,6 +1608,43 @@ ethUtil.withdrawEth = function (eth) {
             console.log('提取成功，交易hash为：', ret);
         }
     });
+};
+
+// 签名
+ethUtil.createMarketSign = function (sut, marketId, ctCount, ctPrice, ctRecyclePrice, gasLimit, gasPrice) {
+    let sutWei = myWeb3.utils.toWei(sut + '');
+    let ctCountWei = myWeb3.utils.toWei(ctCount + '');
+    let ctPriceWei = myWeb3.utils.toWei(ctPrice + '');
+    let ctRecyclePriceWei = myWeb3.utils.toWei(ctRecyclePrice + '');
+    let gesFeeWei = (myWeb3.utils.toWei(gasPrice + '', "gwei") * gasLimit) + '';
+
+    let hash = myWeb3.utils.soliditySha3(
+        account,
+        myWeb3.utils.toBN(sutWei),
+        marketId, marketId,
+        myWeb3.utils.toBN(ctCountWei),
+        myWeb3.utils.toBN(ctPriceWei),
+        myWeb3.utils.toBN(ctRecyclePriceWei),
+        myWeb3.utils.toBN(gesFeeWei)
+    );
+
+    console.log("======================================================");
+    console.log('sutWei: ', sutWei);
+    console.log('ctCountWei: ', ctCountWei);
+    console.log('ctPriceWei: ', ctPriceWei);
+    console.log('ctRecyclePriceWei: ', ctRecyclePriceWei);
+    console.log('gesFeeWei: ', gesFeeWei);
+
+    console.log('account: ', account);
+    console.log('hash: ', hash);
+    web3.personal.sign(hash, account, (err, ret) => {
+        if (err) {
+            console.log('err', err);
+        } else {
+            console.log('sign: ', ret);
+        }
+    });
+
 };
 
 
