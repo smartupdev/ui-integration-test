@@ -17,13 +17,19 @@
   <p>连接网络：<span id="netId"></span></p>
   <p>公钥地址：<span id="publicKey"></span></p>
 
+  <br>
+
   <p><button id="getBalance">查询余额</button></p>
   <p>以太坊余额：<span id="ethBalance"></span></p>
 
-  <p><button id="transaction">转账</button></p>
-  <p>交易哈希：<span id="txHash"></span></p>
+  <br>
 
-  <p> <input id="signText" type="text" /> <button id="signature">签名</button></p>
+  <p><button id="transaction">测试给自己转账</button></p>
+
+  <br>
+
+  <p>签名</p>
+  <p> <input id="signText" type="text" placeholder="需要签名的数据"/> <button id="signature">签名</button></p>
 
 
   <br><br><br>
@@ -194,7 +200,19 @@
 
   <br><br><br>
 
-  <h3>IPFS测试</h3>
+  <h3>查询交易</h3>
+  <p>
+    <select id="transactionType">
+      <option value = "1">正常交易</option>
+      <option value = "2">创建市场交易</option>
+      <option value = "3">买入ct交易</option>
+      <option value = "4">卖出ct交易</option>
+    </select>
+    <input id="transactionHash" type="text" value=""/>
+    <button id="getTransactionDetails">获取交易信息</button>
+  </p>
+
+  <h5>IPFS测试</h5>
 
   <textarea id="jsonStr"></textarea>
   <p><button id="postIpfsJson">写入字符串，见console</button></p>
@@ -209,37 +227,8 @@
   <p><input id="img" type="file"/></p>
   <p><button id="postIpfsImg">写入图片，见console</button></p>
 
-
-
   <br/><br/><br/>
 
-  <h3>BigchainDB测试</h3>
-
-  <p><button id="bigchainPut">bigchainPut</button></p>
-
-  <p><button id="bigchainGet">bigchainGet</button></p>
-
-  <p><button id="bigchainSearch">bigchainSearch</button></p>
-
-  <p><button id="bigchainTransfer">bigchainTransfer</button></p>
-
-  <p><button id="bigchainSearchOwner">bigchainSearchOwner</button></p>
-
-  <br/><br/><br/>
-
-  <h3>查询交易</h3>
-  <p>
-      <select id="transactionType">
-          <option value = "1">正常交易</option>
-          <option value = "2">创建市场交易</option>
-          <option value = "3">买入ct交易</option>
-          <option value = "4">卖出ct交易</option>
-        </select>
-    <input id="transactionHash" type="text" value=""/>
-    <button id="getTransactionDetails">获取交易信息</button>
-  </p>
-
-  <br/><br/>
 
   <h3>平台升级</h3>
 
@@ -307,6 +296,22 @@
   <p><input id="gl_gasLimit" placeholder="gasLimit"></p>
   <p><input id="gl_gasPrice" placeholder="gasPrice"></p>
   <p><button id="createMarketSign">签名</button></p>
+
+
+  <br/><br/><br/>
+
+  <h3>平台升级 2</h3>
+
+  <h5>创建市场</h5>
+
+  <p><input id="cm_sut" placeholder="sut"></p>
+  <p><input id="cm_marketId" placeholder="marketId"></p>
+  <p><input id="cm_ctCount" placeholder="ctCount"></p>
+  <p><input id="cm_ctPrice" placeholder="ctPrice"></p>
+  <p><input id="cm_ctRecyclePrice" placeholder="ctRecyclePrice"></p>
+  <p><input id="cm_gasLimit" placeholder="gasLimit"></p>
+  <p><input id="cm_gasPrice" placeholder="gasPrice"></p>
+  <p><button id="createMarketDo">创建</button></p>
 
 
   <br/><br/><br/>

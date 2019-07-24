@@ -1,12 +1,8 @@
 import $ from 'jquery'
 import {ipfs} from '../component/ipfs'
-// import {orbitdb} from '../component/orbitdb'
-// import {gun} from '../component/gun'
-// import {bigchain} from '../component/bigchain'
 import {ethUtil} from '../component/ethUtil'
 
 var account;
-
 
 $(function() {
 
@@ -34,13 +30,20 @@ $(function() {
             account = accounts[0];
             window.account = accounts[0];
 
-            window.account = web3.eth.accounts[0];
-            account = web3.eth.accounts[0];
             $('#publicKey').html(window.account);
+            $('#getBalance').click();
+
+        }).catch((e) => {
+            alert('Metamask 授权失败');
+            console.log('MateMask login error = ', e);
+        });
+
+        // 网络ID
+        myWeb3.eth.net.getId().then(id => {
 
             // 获取当前连接的网络
-            var network = 'ID=' + web3.version.network + ', ';
-            switch (web3.version.network) {
+            var network = 'ID=' + id + ', ';
+            switch (id) {
                 case '1':
                     network += '主网络';
                     break;
@@ -57,27 +60,15 @@ $(function() {
                     network += '测试网络';
                     break;
             }
-
             $('#netId').html(network);
 
-            $('#getBalance').click();
-
-
-        }).catch((e)=> {
-            alert('Metamask 授权失败');
-            console.log('MateMask login error = ',e);
+        }).catch(e => {
+            console.log('Get network id err = ', e);
         });
-
-
 
     });
 
     $('#getBalance').on('click', () => {
-        // if(!account){
-        //   alert('请先连接MateMask');
-        // }
-        var account = web3.eth.accounts[0]
-        // account = web3.eth.coinbase;
         web3.eth.getBalance(account, (err, balance) => {
             if(err) {
                 console.log('get balance err =', err);
@@ -85,7 +76,6 @@ $(function() {
             var numb = web3.fromWei(balance, 'ether') + ' ETH';
             $('#ethBalance').html(numb);
         });
-
     });
 
     $('#transaction').on('click', () => {
@@ -95,9 +85,9 @@ $(function() {
             value: web3.toWei(0, 'ether'),
         }, (err, txHash) => {
             if(err) {
-                console.log('transaction err =', err);
+                console.log('transaction err = ', err);
             }
-            $('#txHash').html(txHash)
+            console.log('txHash = ', txHash);
         })
     });
 
@@ -395,29 +385,6 @@ $(function() {
 
     })
 
-    // ================================== bigchain ===================================
-
-    $('#bigchainPut').on('click', () => {
-        bigchain.put()
-    })
-
-    $('#bigchainGet').on('click', () => {
-        bigchain.get()
-    })
-
-    $('#bigchainSearch').on('click', () => {
-        bigchain.search()
-    })
-
-    $('#bigchainTransfer').on('click', () => {
-        bigchain.transfer()
-    })
-
-    $('#bigchainSearchOwner').on('click', () => {
-        bigchain.searchOwner()
-    })
-
-
     // ============================= 平台升级 ============================================
 
     $('#chargeSutBtn').on('click', function () {
@@ -458,5 +425,7 @@ $(function() {
         let gasPrice = $('#gl_gasPrice').val() + '';
         ethUtil.createMarketSign(sut, marketId, ctCount, ctPrice, ctRecyclePrice, gasLimit, gasPrice);
     });
+
+    // ============================= 平台升级 2 ============================================
 
 });
