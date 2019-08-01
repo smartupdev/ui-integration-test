@@ -8,7 +8,7 @@ const adminAddress = '0xea997cfc8beF47730DFd8716A300bDAB219c1f89';
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
-const exchangeContractAddress = '0x225bd29c241a3874467ccea4fdc6bc4d3d181e3d';
+const exchangeContractAddress = '0x65235325ef5d62a86a321f4b659e0846ec0569dd';
 
 if (!window.web3) {
     alert('请先安装metamask');
@@ -1421,6 +1421,9 @@ ethUtil.getTransactionDetails = function (type, hash) {
 };
 
 
+// ===================================== 平台升级 ===============================================
+
+
 ethUtil.chargeSut = function(sut) {
     let sutWei = myWeb3.utils.toWei(sut + '');
     // encode function
@@ -1611,7 +1614,7 @@ ethUtil.withdrawEth = function (eth) {
 };
 
 // 签名
-ethUtil.createMarketSign = function (sut, marketId, ctCount, ctPrice, ctRecyclePrice, gasLimit, gasPrice) {
+ethUtil.createMarketSign = function (sut, marketId, marketSymbol, ctCount, ctPrice, ctRecyclePrice, closingTime, gasLimit, gasPrice) {
     let sutWei = myWeb3.utils.toWei(sut + '');
     let ctCountWei = myWeb3.utils.toWei(ctCount + '');
     let ctPriceWei = myWeb3.utils.toWei(ctPrice + '');
@@ -1621,11 +1624,12 @@ ethUtil.createMarketSign = function (sut, marketId, ctCount, ctPrice, ctRecycleP
     let hash = myWeb3.utils.soliditySha3(
         account,
         myWeb3.utils.toBN(sutWei),
-        marketId, marketId,
+        marketId, marketSymbol,
         myWeb3.utils.toBN(ctCountWei),
         myWeb3.utils.toBN(ctPriceWei),
         myWeb3.utils.toBN(ctRecyclePriceWei),
-        myWeb3.utils.toBN(gesFeeWei)
+        myWeb3.utils.toBN(gesFeeWei),
+        closingTime
     );
 
     console.log("======================================================");

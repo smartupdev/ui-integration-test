@@ -418,14 +418,15 @@ $(function() {
     $('#createMarketSign').on('click', function () {
         let sut = $('#gl_sut').val() + '';
         let marketId = $('#gl_marketId').val();
+        let marketSymbol = $('#gl_marketSymbol').val();
         let ctCount = $('#gl_ctCount').val() + '';
         let ctPrice = $('#gl_ctPrice').val() + '';
         let ctRecyclePrice = $('#gl_ctRecyclePrice').val() + '';
+        let closingTime = $('#gl_closingTime').val() + '';
         let gasLimit = $('#gl_gasLimit').val() + '';
         let gasPrice = $('#gl_gasPrice').val() + '';
-        ethUtil.createMarketSign(sut, marketId, ctCount, ctPrice, ctRecyclePrice, gasLimit, gasPrice);
+        ethUtil.createMarketSign(sut, marketId, marketSymbol, ctCount, ctPrice, ctRecyclePrice, closingTime, gasLimit, gasPrice);
     });
 
-    // ============================= 平台升级 2 ============================================
 
 });
