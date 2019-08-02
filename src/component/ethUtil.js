@@ -8,7 +8,7 @@ const adminAddress = '0xea997cfc8beF47730DFd8716A300bDAB219c1f89';
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
-const exchangeContractAddress = '0x65235325ef5d62a86a321f4b659e0846ec0569dd';
+const exchangeContractAddress = '0x5674b8e69c366dc992a2a653966c8ce54402c518';
 
 if (!window.web3) {
     alert('请先安装metamask');
