@@ -1648,8 +1648,118 @@ ethUtil.createMarketSign = function (sut, marketId, marketSymbol, ctCount, ctPri
             console.log('sign: ', ret);
         }
     });
-
 };
 
+ethUtil.queryMarketBalance = function(marketAddress) {
+
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'tokenBalance',
+        type: 'function',
+        inputs: [
+            {type: 'address', name: 'address'},
+            {type: 'address', name: 'address'}
+        ]
+    }, [marketAddress, marketAddress]);
+
+    myWeb3.eth.call({
+        to: exchangeContractAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('第一阶段剩余CT为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.queryCtPrice = function(marketAddress) {
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'exchangeRate',
+        type: 'function',
+        inputs: []
+    }, []);
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('第一阶段买入价格为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.queryCtRecyclePrice = function(marketAddress) {
+    let data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'recycleRate',
+        type: 'function',
+        inputs: []
+    }, []);
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('回收价格为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.queryMyCtCount = function(marketAddress) {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'tokenBalance',
+        type: 'function',
+        inputs: [
+            {
+                type: 'address',
+                name: 'address'
+            },
+            {
+                type: 'address',
+                name: 'address'
+            },
+        ]
+    }, [marketAddress, window.account]);
+
+    // transaction
+    myWeb3.eth.call({
+        to: exchangeContractAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('我的CT数量为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.firstStageBuy = function (useAddress, marketAddress, ctCount, gasLimit, gasPrice, time) {
+    let ctCountWei = myWeb3.utils.toWei(ctCount);
+    let feeWei = (myWeb3.utils.toWei(gasPrice + '', "gwei") * gasLimit) + '';
+    let timeHash = myWeb3.utils.sha3(time);
+
+    console.log('time sha3 = ', timeHash);
+
+    let hash = myWeb3.utils.soliditySha3(
+        marketAddress,
+        ctCountWei,
+        useAddress,
+        feeWei,
+        timeHash
+    );
+    web3.personal.sign(hash, account, (err, ret) => {
+        if (err) {
+            console.log('err', err);
+        } else {
+            console.log('sign: ', ret);
+        }
+    });
+};
 
 export {ethUtil}

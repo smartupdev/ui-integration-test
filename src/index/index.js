@@ -428,5 +428,34 @@ $(function() {
         ethUtil.createMarketSign(sut, marketId, marketSymbol, ctCount, ctPrice, ctRecyclePrice, closingTime, gasLimit, gasPrice);
     });
 
+    $('#queryMarketBalance').on('click', function () {
+        let marketAddress = $('#marketAddress').val();
+        ethUtil.queryMarketBalance(marketAddress);
+    });
+
+    $('#queryCtPrice').on('click', function () {
+        let marketAddress = $('#marketAddress').val();
+        ethUtil.queryCtPrice(marketAddress);
+    });
+
+    $('#queryCtRecyclePrice').on('click', function () {
+        let marketAddress = $('#marketAddress').val();
+        ethUtil.queryCtRecyclePrice(marketAddress);
+    });
+
+    $('#queryMyCtCount').on('click', function () {
+        let marketAddress = $('#marketAddress').val();
+        ethUtil.queryMyCtCount(marketAddress);
+    });
+
+    $('#firstStageBuy').on('click', function () {
+        let marketAddress = $('#fb_marketAddress').val() + '';
+        let ctCount = $('#fb_ctCount').val();
+        let userAddress = $('#fb_userAddress').val();
+        let gasLimit = $('#fb_gasLimit').val() + '';
+        let gasPrice = $('#fb_gasPrice').val() + '';
+        let time = $('#fb_time').val() + '';
+        ethUtil.firstStageBuy(userAddress, marketAddress, ctCount, gasLimit, gasPrice, time);
+    })
 
 });
