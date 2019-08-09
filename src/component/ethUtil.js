@@ -1624,7 +1624,8 @@ ethUtil.createMarketSign = function (sut, marketId, marketSymbol, ctCount, ctPri
     let hash = myWeb3.utils.soliditySha3(
         account,
         myWeb3.utils.toBN(sutWei),
-        marketId, marketSymbol,
+        marketId,
+        {type: 'string', value: marketSymbol},
         myWeb3.utils.toBN(ctCountWei),
         myWeb3.utils.toBN(ctPriceWei),
         myWeb3.utils.toBN(ctRecyclePriceWei),
@@ -1735,6 +1736,28 @@ ethUtil.queryMyCtCount = function(marketAddress) {
             console.log(err);
         } else {
             console.log('我的CT数量为：', myWeb3.utils.fromWei(ret));
+        }
+    });
+};
+
+ethUtil.queryMarketStage = function(marketAddress) {
+    // encode function
+    var data = myWeb3.eth.abi.encodeFunctionCall({
+        name: 'isInFirstPeriod',
+        type: 'function',
+        inputs: []
+    }, []);
+
+    // transaction
+    myWeb3.eth.call({
+        to: marketAddress,
+        data: data
+    }, function (err, ret) {
+        if (err) {
+            console.log(err);
+        } else {
+            let isFirst = myWeb3.eth.abi.decodeParameter('bool', ret);
+            console.log('当前市场阶段为：', isFirst? '第一阶段' : '第二阶段');
         }
     });
 };

@@ -448,6 +448,11 @@ $(function() {
         ethUtil.queryMyCtCount(marketAddress);
     });
 
+    $('#queryMarketStage').on('click', function () {
+        let marketAddress = $('#marketAddress').val();
+        ethUtil.queryMarketStage(marketAddress);
+    });
+
     $('#firstStageBuy').on('click', function () {
         let marketAddress = $('#fb_marketAddress').val() + '';
         let ctCount = $('#fb_ctCount').val();
