@@ -93,17 +93,18 @@ $(function() {
 
     // 签名
     $('#signature').on('click', function () {
-        var msg = $('#signText').val();
-        web3.personal.sign(msg, account, (err, ret) => {
+        let msg = $('#signText').val();
+        let msgHash = myWeb3.utils.utf8ToHex(msg);
+        web3.personal.sign(msgHash, account, (err, ret) => {
             if (err) {
                 console.log('err', err)
             } else {
-                console.log('account: ', account)
-                console.log('msg: ', msg)
+                console.log('account: ', account);
+                console.log('msg: ', msg);
                 console.log('sign: ', ret)
             }
         })
-    })
+    });
 
     // ================================== eth  =====================================
 
