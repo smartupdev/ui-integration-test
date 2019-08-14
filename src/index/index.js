@@ -94,7 +94,10 @@ $(function() {
     // 签名
     $('#signature').on('click', function () {
         let msg = $('#signText').val();
-        let msgHash = myWeb3.utils.utf8ToHex(msg);
+        let msgHash = msg;
+        if (!msg.startsWith('0x')) {
+            msgHash = myWeb3.utils.utf8ToHex(msg);
+        }
         web3.personal.sign(msgHash, account, (err, ret) => {
             if (err) {
                 console.log('err', err)
