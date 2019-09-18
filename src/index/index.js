@@ -66,6 +66,8 @@ $(function() {
             console.log('Get network id err = ', e);
         });
 
+
+
     });
 
     $('#getBalance').on('click', () => {
@@ -97,6 +99,9 @@ $(function() {
         let msgHash = msg;
         if (!msg.startsWith('0x')) {
             msgHash = myWeb3.utils.utf8ToHex(msg);
+            console.log('msgHex = ', msgHash);
+        } else {
+            console.log('msgHex = ', msg);
         }
         web3.personal.sign(msgHash, account, (err, ret) => {
             if (err) {
@@ -465,6 +470,42 @@ $(function() {
         let gasPrice = $('#fb_gasPrice').val() + '';
         let time = $('#fb_time').val() + '';
         ethUtil.firstStageBuy(userAddress, marketAddress, ctCount, gasLimit, gasPrice, time);
-    })
+    });
+
+    $('#tradeSellSign').on('click', function () {
+        let marketAddress = $('#trade_marketAddress').val();
+        let sutAddress = $('#trade_sutAddress').val();
+        let ctCount = $('#trade_ctCount').val();
+        let ctPrice = $('#trade_ctPrice').val();
+        let time = $('#trade_time').val();
+        ethUtil.makeSign('sell', marketAddress, sutAddress, ctPrice, ctCount, time);
+    });
+
+    $('#tradeBuySign').on('click', function () {
+        let marketAddress = $('#trade_marketAddress').val();
+        let sutAddress = $('#trade_sutAddress').val();
+        let ctCount = $('#trade_ctCount').val();
+        let ctPrice = $('#trade_ctPrice').val();
+        let time = $('#trade_time').val();
+        ethUtil.makeSign('buy', marketAddress, sutAddress, ctPrice, ctCount, time);
+    });
+
+    $('#takeSellSign').on('click', function () {
+        let volume = $('#take_volume').val();
+        let price = $('#take_price').val();
+        let timestamp = $('#take_timestamp').val();
+        let fee = $('#take_fee').val();
+        let marketAddress = $('#take_marketAddress').val();
+        ethUtil.takeSign('sell', volume, price, timestamp, fee, marketAddress);
+    });
+
+    $('#takeBugSign').on('click', function () {
+        let volume = $('#take_volume').val();
+        let price = $('#take_price').val();
+        let timestamp = $('#take_timestamp').val();
+        let fee = $('#take_fee').val();
+        let marketAddress = $('#take_marketAddress').val();
+        ethUtil.takeSign('buy', volume, price, timestamp, fee, marketAddress);
+    });
 
 });

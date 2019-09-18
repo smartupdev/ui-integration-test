@@ -8,7 +8,7 @@ const adminAddress = '0xea997cfc8beF47730DFd8716A300bDAB219c1f89';
 const sutContractAddress ='0xf1899c6eb6940021c1ae4e9c3a8e29ee93704b03';
 const smartupContractAddress = '0x184a3dad8912a81ab393b83892f2039ec0297132';
 const nttContractAddress = '0x846ce03199a759a183cccb35146124cd3f120548';
-const exchangeContractAddress = '0x5674b8e69c366dc992a2a653966c8ce54402c518';
+const exchangeContractAddress = '0xABaed2d6B739cd7B9c54C818300520592344Fd96';
 
 if (!window.web3) {
     alert('请先安装metamask');
@@ -1622,18 +1622,20 @@ ethUtil.createMarketSign = function (sut, marketId, marketSymbol, ctCount, ctPri
     let gesFeeWei = (myWeb3.utils.toWei(gasPrice + '', "gwei") * gasLimit) + '';
 
     let hash = myWeb3.utils.soliditySha3(
-        account,
-        myWeb3.utils.toBN(sutWei),
-        marketId,
+        {type: 'address', value: account},
+        {type: 'uint256', value: sutWei},
+        {type: 'string', value: marketId},
         {type: 'string', value: marketSymbol},
-        myWeb3.utils.toBN(ctCountWei),
-        myWeb3.utils.toBN(ctPriceWei),
-        myWeb3.utils.toBN(ctRecyclePriceWei),
-        myWeb3.utils.toBN(gesFeeWei),
-        closingTime
+        {type: 'uint256', value: ctCountWei},
+        {type: 'uint256', value: ctPriceWei},
+        {type: 'uint256', value: ctRecyclePriceWei},
+        {type: 'uint256', value: gesFeeWei},
+        {type: 'uint256', value: closingTime}
     );
 
     console.log("======================================================");
+    console.log('name: ', marketId);
+    console.log('symbol: ', marketSymbol);
     console.log('sutWei: ', sutWei);
     console.log('ctCountWei: ', ctCountWei);
     console.log('ctPriceWei: ', ctPriceWei);
@@ -1767,20 +1769,106 @@ ethUtil.firstStageBuy = function (useAddress, marketAddress, ctCount, gasLimit, 
     let feeWei = (myWeb3.utils.toWei(gasPrice + '', "gwei") * gasLimit) + '';
     let timeHash = myWeb3.utils.sha3(time);
 
+    console.log('ctCountWei = ', ctCountWei);
+    console.log('feeWei = ', feeWei);
     console.log('time sha3 = ', timeHash);
 
     let hash = myWeb3.utils.soliditySha3(
-        marketAddress,
-        ctCountWei,
-        useAddress,
-        feeWei,
-        timeHash
+        {type: "address", value: marketAddress},
+        {type: "uint256", value: ctCountWei},
+        {type: "address", value: useAddress},
+        {type: "uint256", value: feeWei},
+        {type: "bytes32", value: timeHash}
     );
+
+    console.log('soliditySha3 hash = ', hash);
+
     web3.personal.sign(hash, account, (err, ret) => {
         if (err) {
             console.log('err', err);
         } else {
             console.log('sign: ', ret);
+        }
+    });
+};
+
+ethUtil.makeSign = function (type, marketAddress, sutAddress, price, volume, timestamp) {
+    let volumeWei = myWeb3.utils.toWei(volume);
+    let priceWei = myWeb3.utils.toWei(price);
+
+    let hash = '';
+    if (type === 'sell') {
+        hash = myWeb3.utils.soliditySha3(
+            {type: "uint256", value: volumeWei},
+            {type: "uint256", value: priceWei},
+            {type: "uint256", value: timestamp},
+            {type: "address", value: marketAddress},
+            {type: "address", value: sutAddress},
+            {type: "address", value: window.account},
+        );
+    } else if (type === 'buy') {
+        hash = myWeb3.utils.soliditySha3(
+            {type: "uint256", value: volumeWei},
+            {type: "uint256", value: priceWei},
+            {type: "uint256", value: timestamp},
+            {type: "address", value: sutAddress},
+            {type: "address", value: marketAddress},
+            {type: "address", value: window.account},
+        );
+    }
+
+    console.log('volumeWei = ', volumeWei);
+    console.log('priceWei = ', priceWei);
+    console.log('account = ', window.account);
+    console.log('hash = ', hash);
+
+    web3.personal.sign(hash, account, (err, ret) => {
+        if (err) {
+            console.log('err', err);
+        } else {
+            console.log('trade sign: ', ret);
+        }
+    });
+};
+
+ethUtil.takeSign = function (type, volume, price, time, fee, marketAddress) {
+    let volumeWei = myWeb3.utils.toWei(volume);
+    let priceWei = myWeb3.utils.toWei(price);
+    let feeWei = myWeb3.utils.toWei(fee, 'gwei');
+
+    let sellAddress;
+    let buyAddress;
+    if (type === 'sell') {
+        sellAddress = marketAddress;
+        buyAddress = sutContractAddress;
+    } else if (type === 'buy') {
+        sellAddress = sutContractAddress;
+        buyAddress = marketAddress;
+    }
+
+    let hash = myWeb3.utils.soliditySha3(
+        {type: "uint256", value: volumeWei},
+        {type: "uint256", value: priceWei},
+        {type: "uint256", value: time},
+        {type: "uint256", value: feeWei},
+        {type: "address", value: sellAddress},
+        {type: "address", value: buyAddress},
+        {type: "address", value: window.account},
+    );
+
+    console.log('volumeWei = ', volumeWei);
+    console.log('priceWei = ', priceWei);
+    console.log('time = ', time);
+    console.log('feeWei = ', feeWei);
+    console.log('sellAddress = ', sellAddress);
+    console.log('buyAddress = ', buyAddress);
+    console.log('window.account = ', window.account);
+
+    web3.personal.sign(hash, account, (err, ret) => {
+        if (err) {
+            console.log('err', err);
+        } else {
+            console.log('take sign: ', ret);
         }
     });
 };
